@@ -4,6 +4,8 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import Projects from "./pages/projects";
+import Project from "./pages/projects/Project";
+import Commits from "./pages/projects/Commits";
 import Meetings from "./pages/meetings";
 import Tasks from "./pages/tasks";
 import Students from "./pages/students";
@@ -17,8 +19,9 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="projects/" >
             <Route index element={<Projects />} />
-            <Route path=":projectId/" element={<Home />} >
-              <Route path="commits" element={<Home />} />
+            <Route path=":projectId/">
+            <Route index element={<Project />} />
+              <Route path="commits" element={<Commits />} />
               <Route path="tasks" element={<Tasks />} >
                 <Route path="add" element={<Home />} />
               </Route>
