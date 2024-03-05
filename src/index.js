@@ -3,6 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
+import Projects from "./pages/projects";
+import Meetings from "./pages/meetings";
+import Tasks from "./pages/tasks";
+import Students from "./pages/students";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
@@ -11,20 +15,23 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="projects/" element={<Home />}>
+          <Route path="projects/" >
+            <Route index element={<Projects />} />
             <Route path=":projectId/" element={<Home />} >
               <Route path="commits" element={<Home />} />
-              <Route path="tasks" element={<Home />} >
+              <Route path="tasks" element={<Tasks />} >
                 <Route path="add" element={<Home />} />
               </Route>
             </Route>
             <Route path="add" element={<Home />} />
           </Route>
-          <Route path="meetings/" element={<Home />}>
-            <Route path="add" element={<Home />} />
+          <Route path="meetings/" >
+            <Route index element={<Meetings />} />
+            <Route path="arrange" element={<Home />} />
           </Route>
           <Route path="scientificleadership/add" element={<Home />} />
-          <Route path="students/" element={<Home />}>
+          <Route path="students/" >
+            <Route index element={<Students />} />
             <Route path="add" element={<Home />} />
           </Route>
           <Route path="*" element={<NoPage />} />
