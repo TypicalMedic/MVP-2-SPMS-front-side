@@ -9,7 +9,7 @@ import Container from 'react-bootstrap/Container';
 const Layout = () => {
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
+            <Navbar expand="lg" className="bg-body-tertiary" >
                 <Container>
                     <LinkContainer to="/">
                         <Navbar.Brand>SPMS</Navbar.Brand>
