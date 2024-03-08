@@ -7,7 +7,7 @@ import Projects from "./pages/projects";
 import Project from "./pages/projects/Project";
 import Commits from "./pages/projects/Commits";
 import Meetings from "./pages/meetings";
-import Tasks from "./pages/tasks";
+import Tasks from "./pages/projects/tasks";
 import Students from "./pages/students";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
