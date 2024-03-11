@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import ProjectSidebar from '../ProjectSidebar';
 import { Col, Row } from 'react-bootstrap';
-import { Container, Card, Badge, Button } from 'react-bootstrap';
+import { Container, Card, Badge, Button, Accordion } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const reqOptions = {
   }
 };
 
-function Tasks () {
+function Tasks() {
   const [tasks, setTasks] = useState(null);
   let { projectId } = useParams();
 
@@ -32,7 +32,7 @@ function Tasks () {
       .catch(error => console.error(error));
   }, []);
 
-  function renderTasks(){
+  function renderTasks() {
     if (tasks.length == 0) {
       return (
         <Col>
@@ -54,7 +54,15 @@ function Tasks () {
               до: {task.deadline}
             </Card.Subtitle>
             <Card.Text className="text-muted">
-              {task.description.substring(0, 50)}...
+              <Accordion>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header> Описание...</Accordion.Header>
+                  <Accordion.Body>
+                    {task.description}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+             
             </Card.Text>
           </Card.Body>
         </Card>

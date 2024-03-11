@@ -8,6 +8,7 @@ import Project from "./pages/projects/Project";
 import Commits from "./pages/projects/Commits";
 import Meetings from "./pages/meetings";
 import Tasks from "./pages/projects/tasks";
+import Task from "./pages/projects/tasks/task";
 import Students from "./pages/students";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "css/style.css"
@@ -21,9 +22,13 @@ export default function App() {
           <Route path="projects/" >
             <Route index element={<Projects />} />
             <Route path=":projectId/">
-            <Route index element={<Project />} />
+              <Route index element={<Project />} />
               <Route path="commits" element={<Commits />} />
-              <Route path="tasks" element={<Tasks />} >
+              <Route path="tasks" >
+                <Route index element={<Tasks />} />
+                <Route path=":taskId/">
+                  <Route index element={<Task />} />
+                </Route>
                 <Route path="add" element={<Home />} />
               </Route>
             </Route>
