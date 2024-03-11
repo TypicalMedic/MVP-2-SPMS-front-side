@@ -42,8 +42,8 @@ function Tasks () {
     }
     return tasks.map((task) =>
       <Col>
-        <Card border="info" className="mb-4">
-          <Card.Header>#{task.id} <Badge pill bg="info">{task.status}</Badge></Card.Header>
+        <Card className="mb-4 style-outline">
+          <Card.Header>#{task.id} <Badge pill bg="info" className='style-bg'>{task.status}</Badge></Card.Header>
           <Card.Body>
             <Card.Title className='mb-3'>
               <LinkContainer to={"./" + task.id}>

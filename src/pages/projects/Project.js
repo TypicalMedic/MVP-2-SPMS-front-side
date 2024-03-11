@@ -39,10 +39,10 @@ function Project() {
                         <div>
                             <Row className='mb-3'>
                                 <Col md="auto">
-                                    Статус: <Badge pill bg="info" className='mx-2'>{project.status}</Badge>
+                                    Статус: <Badge pill bg="info" className='mx-2 style-bg'>{project.status}</Badge>
                                 </Col>
                                 <Col md="auto">
-                                    Стадия: <Badge pill bg="info" className='mx-2'>{project.stage}</Badge>
+                                    Стадия: <Badge pill bg="info" className='mx-2 style-bg'>{project.stage}</Badge>
                                 </Col>
                             </Row>
                             <Row className='mb-3'>

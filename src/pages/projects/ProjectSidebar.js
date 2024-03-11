@@ -6,21 +6,21 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from "react-router-dom";
 
-function ProjectSidebar(props) {  
+function ProjectSidebar(props) {
   return (
     <>
-      <Row className="bg-body-tertiary d-grid gap-2">
-        <LinkContainer style={{ borderRadius: 0 }} to={"/projects/" + props.projectId}>
-          <Button variant="outline-success">Информация</Button>
+      <Row className="bg-body-tertiary d-grid gap-2 mb-4">
+        <LinkContainer to={"/projects/" + props.projectId}>
+          <Button className='style-button'>Информация</Button>
         </LinkContainer>
-        <LinkContainer style={{ borderRadius: 0 }} to={"/projects/" + props.projectId + "/tasks"}>
-          <Button variant="outline-success">Задания</Button>
+        <LinkContainer to={"/projects/" + props.projectId + "/tasks"}>
+          <Button className='style-button'>Задания</Button>
         </LinkContainer>
-        <LinkContainer style={{ borderRadius: 0 }} to={"/projects/" + props.projectId + "/commits"}>
-          <Button variant="outline-success">Коммиты</Button>
+        <LinkContainer to={"/projects/" + props.projectId + "/commits"}>
+          <Button className='style-button'>Коммиты</Button>
         </LinkContainer>
-        <LinkContainer style={{ borderRadius: 0 }} to={"/"}>
-          <Button variant="outline-success">Статистика</Button>
+        <LinkContainer to={"/"}>
+          <Button className='style-button'>Статистика</Button>
         </LinkContainer>
       </Row>
     </>

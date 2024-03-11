@@ -10,6 +10,7 @@ import Meetings from "./pages/meetings";
 import Tasks from "./pages/projects/tasks";
 import Students from "./pages/students";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "css/style.css"
 
 export default function App() {
   return (

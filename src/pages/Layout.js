@@ -38,7 +38,7 @@ const Layout = () => {
                         </Nav>
                         <Nav>
                             <LinkContainer to="/scientificleadership/add">
-                                <Button variant="success">Взять под научное руководство</Button>
+                                <Button className="style-button active" variant="success">Взять под научное руководство</Button>
                             </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
