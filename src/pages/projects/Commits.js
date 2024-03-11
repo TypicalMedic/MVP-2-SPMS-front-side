@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
+import ProjectSidebar from './ProjectSidebar';
+import { Col, Row, ListGroup } from 'react-bootstrap';
 
-import {useParams} from "react-router-dom";
+
+import { useParams } from "react-router-dom";
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -12,29 +15,65 @@ const reqOptions = {
     headers: {
         "Professor-Id": cookies.get('professor_id')
     }
-  };
+};
 
 function Commits() {
-    const [data, setData] = useState(null);
+    const [commits, setCommits] = useState(null);
     let { projectId } = useParams();
 
     useEffect(() => {
         const currentTime = new Date(Date.now());
-        currentTime.setDate(currentTime.getDate()-30)
-        console.log(cookies.get('professor_id')); 
+        currentTime.setDate(currentTime.getDate() - 30)
         fetch('http://127.0.0.1:8080/projects/' + projectId + "/commits?" + new URLSearchParams({
             from: currentTime.toISOString(),
         }), reqOptions)
             .then(response => response.json())
-            .then(json => setData(json))
+            .then(json => setCommits(json["commits"]))
             .catch(error => console.error(error));
     }, []);
+
+    function renderCommits() {
+        if (commits.length == 0) {
+            return (
+                <Col>
+                    Коммитов нет!
+                </Col>
+            )
+        }
+        return commits.map((commit) =>
+            <Row as="li" className="d-flex justify-content-between align-items-start">
+                <Col xs={12} sm={12} md={3} lg={2} xxl={1} className='fst-italic text-secondary'>
+                    {commit.date_created}
+                </Col>
+                <Col className='mb-3 text-break'>
+                    <h5>
+                        {commit.message}
+                    </h5>
+                    <div className='text-secondary-emphasis'>
+                        Автор: {commit.created_by}
+                    </div>
+                </Col>
+                <hr />
+            </Row>
+        )
+    }
+
     return (
         <>
-            <h1>Project {projectId} commits for last 30 days</h1>
-            <div>
-                {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
-            </div>
+            <Row className='m-2'>
+                <Col Col xs={12} sm={12} md={4} xl={2}>
+                    <ProjectSidebar projectId={projectId} />
+                </Col>
+                <Col xs={12} sm={12} md={8} xl={10} className='px-5'>
+                    <h3 className='mb-4'>Коммиты проекта #{projectId} за последние 30 дней</h3>
+                    <hr />
+                    <div>
+                        <ListGroup className=''>
+                            {commits ? renderCommits() : 'Loading...'}
+                        </ListGroup>
+                    </div>
+                </Col>
+            </Row>
         </>
     );
 };

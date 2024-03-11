@@ -1,0 +1,21 @@
+.style-outline {
+    border-color: darkcyan;
+}
+
+.style-bg {
+    background-color: darkcyan !important;
+}
+
+.style-button {
+    border-color: darkcyan!important;
+    background-color: transparent !important;
+}
+
+.style-button:hover {
+    background-color: darkcyan !important;
+}
+
+.style-button:active,
+.style-button.active {
+    background-color: darkcyan !important;
+}

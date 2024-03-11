@@ -17,7 +17,6 @@ function Students() {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        console.log(cookies.get('professor_id')); 
         fetch('http://127.0.0.1:8080/students', reqOptions)
             .then(response => response.json())
             .then(json => setData(json))
