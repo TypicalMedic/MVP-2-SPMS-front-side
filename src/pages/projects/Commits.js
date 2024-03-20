@@ -33,7 +33,7 @@ function Commits() {
     }, []);
 
     function renderCommits() {
-        if (commits.length == 0) {
+        if (commits.length === 0) {
             return (
                 <Col>
                     Коммитов нет!

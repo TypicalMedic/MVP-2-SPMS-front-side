@@ -33,7 +33,7 @@ function Tasks() {
   }, []);
 
   function renderTasks() {
-    if (tasks.length == 0) {
+    if (tasks.length === 0) {
       return (
         <Col>
           Заданий нет!
