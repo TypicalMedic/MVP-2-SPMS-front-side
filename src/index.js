@@ -7,6 +7,7 @@ import Projects from "./pages/projects";
 import Project from "./pages/projects/Project";
 import Commits from "./pages/projects/Commits";
 import Meetings from "./pages/meetings";
+import ArrangeMeeting from "./pages/meetings/arrange";
 import Tasks from "./pages/projects/tasks";
 import Task from "./pages/projects/tasks/task";
 import Students from "./pages/students";
@@ -34,9 +35,9 @@ export default function App() {
             </Route>
             <Route path="add" element={<Home />} />
           </Route>
-          <Route path="meetings/" >
+          <Route path="meetings" >
             <Route index element={<Meetings />} />
-            <Route path="arrange" element={<Home />} />
+            <Route path="arrange" element={<ArrangeMeeting />} />
           </Route>
           <Route path="scientificleadership/add" element={<Home />} />
           <Route path="students/" >
