@@ -1,0 +1,386 @@
+import { Container, Row, Card, Badge, Button, Col, Alert, Form, Tab, Nav, Modal, Spinner } from 'react-bootstrap';
+import Cookies from 'universal-cookie';
+import React, { useState, useEffect, useRef } from 'react';
+
+const cookies = new Cookies();
+
+const getStudentReqOptions = {
+    method: "GET",
+    mode: "cors",
+    cache: "default",
+    credentials: 'include',
+    headers: {
+        "Professor-Id": cookies.get('professor_id')
+    }
+};
+
+let postReqOptions = {
+    method: "POST",
+    mode: "cors",
+    cache: "default",
+    credentials: 'include',
+    headers: {
+        "Professor-Id": cookies.get('professor_id'),
+        "Content-Type": "application/json",
+    },
+};
+
+function AddProject() {
+
+    const steps = ["select-student-method", "add-student", "select-student", "add-project"];
+
+    const [students, setStudents] = useState(null);
+    const [currentStepIndex, setCurrentStep] = useState(0);
+    const [navbar, setNavbar] = useState(<></>);
+    const [formData, setFormData] = useState({});
+    const [studentFormData, setStudentFormData] = useState({});
+    const [addingStudent, setAddingStudent] = useState(false);
+    const [isStudentSelected, setIsStudentSelected] = useState(false);
+    const [isStudentFilled, setIsStudentFilled] = useState(false);
+    const [showAddProjectResult, setShowAddProjectesult] = useState(false);
+    const [addProjectResult, setAddProjectResult] = useState(null);
+
+    const methodStudentStep = 0;
+    const addStudentStep = 1;
+    const selectStudentStep = 2;
+    const addProjectStep = 3;
+
+    const [stepPath, setPath] = useState([methodStudentStep, selectStudentStep, addProjectStep]);
+
+    const selectRef = useRef(null);
+    const addStudentRef = useRef(null);
+
+    useEffect(() => {
+        // setting project defaults
+        setFormData({
+            "theme": "",
+            "student_id": 1,
+            "year": 2024,
+            "repository_owner_login": "",
+            "repository_name": ""
+        });
+        // setting student defaults
+        setStudentFormData({
+            "name": "",
+            "surname": "",
+            "middlename": "",
+            "cource": 1,
+            "education_programme_id": 1
+        });
+        fetch('http://127.0.0.1:8080/students', getStudentReqOptions)
+            .then(response => response.json())
+            .then(json => setStudents(json["students"]))
+            .catch(error => console.error(error));
+        resetSelect();
+        renderNavBar();
+    }, []);
+
+
+    useEffect(() => {
+        renderNavBar();
+    }, [currentStepIndex, stepPath, isStudentFilled, isStudentSelected]);
+
+
+    function resetSelect() {
+        // set select as invalid, so student has to be chosen
+        const element = selectRef.current;
+        setIsStudentSelected(false)
+        element.setCustomValidity("Выберите студента!");
+    }
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setFormData(values => ({ ...values, [name]: value }));
+    }
+
+    const handleStudentChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setStudentFormData(values => ({ ...values, [name]: value }));
+        checkStudentFormValidity();
+    }
+
+    function checkStudentFormValidity() {
+        const element = addStudentRef.current;
+        setIsStudentFilled(element.checkValidity());
+    }
+
+    const handleSelectChange = (event) => {
+        // you cannot select default option anymore, so we can just make it valid
+        event.target.setCustomValidity("");
+        setIsStudentSelected(true);
+        handleChange(event);
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        event.target.reset();
+        resetSelect();
+        OpenRequestResultModal()
+        try {
+            if (addingStudent) {
+                prepareStudentReqBody()
+                const response = await fetch('http://127.0.0.1:8080/students/add', postReqOptions)
+                if (response.status != 200) {
+                    const status = response.status;
+                    setAddProjectResult(status)
+                    return
+                }
+                const data  = await response.json();
+                formData["student_id"] = data["student_id"];
+            }
+            prepareProjectReqBody();
+            const response = await fetch('http://127.0.0.1:8080/projects/add', postReqOptions)
+            const status = response.status;
+            console.log("Responce status:", status);
+            setAddProjectResult(status)
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    function prepareProjectReqBody() {
+        if (typeof formData["student_id"] === 'string') {
+            formData["student_id"] = parseInt(formData["student_id"])
+        }
+        formData["year"] = parseInt(formData["year"])
+        postReqOptions["body"] = JSON.stringify(formData)
+    }
+
+    function prepareStudentReqBody() {
+        studentFormData["cource"] = parseInt(studentFormData["cource"])
+        studentFormData["education_programme_id"] = parseInt(studentFormData["education_programme_id"])
+        postReqOptions["body"] = JSON.stringify(studentFormData)
+    }
+
+    function RenderStudents() {
+        return students.map((student) =>
+            <option value={student.id}>
+                {`${student.surname} ${student.name[0]}. ${student.middlename[0]}., ${student.cource} курс ${student.education_programme}`}
+            </option>)
+    }
+
+    function OpenRequestResultModal() {
+        setShowAddProjectesult(true);
+    }
+    function CloseRequestResultModal() {
+        setShowAddProjectesult(false);
+        setAddProjectResult(null);
+    }
+
+    function RenderRequestResultModal() {
+        let header = "Научное руководство оформлено!";
+        let body = "Вы можете просмотреть проект в списке проектов.";
+        if (addProjectResult != 200) {
+            header = "Произошла ошибка при оформлении научного руководства!";
+            body = `Код ошибки: ${addProjectResult}. Обратитесь в службу поддержки, если прблема не устранится.`;
+        }
+        return <>
+            <Modal.Header>
+                <Modal.Title>{header}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{body}</Modal.Body>
+            <Modal.Footer>
+                <Button className='style-button' onClick={CloseRequestResultModal}>
+                    ОК
+                </Button>
+            </Modal.Footer>
+        </>
+    }
+
+    function moveNextStep(event, next, after) {
+        let newArray = stepPath;
+        if (next) {
+            newArray = newArray.map((p, i) => {
+                if (i === currentStepIndex + 1) {
+                    return next;
+                } else {
+                    return p;
+                }
+            });
+        }
+        if (after) {
+            newArray = newArray.map((p, i) => {
+                if (i === currentStepIndex + 2) {
+                    return after;
+                } else {
+                    return p;
+                }
+            });
+        }
+        setPath(newArray);
+        setCurrentStep(currentStepIndex + 1);
+    }
+    function movePrevStep(event) {
+        let newStep = methodStudentStep;
+        if (currentStepIndex - 1 >= 0) {
+            newStep = currentStepIndex - 1;
+        }
+        setCurrentStep(newStep);
+    }
+
+
+    function renderNavBar() {
+        if (currentStepIndex === methodStudentStep) {
+            setNavbar(renderStudentNavBar());
+            return
+        }
+        setNavbar(renderPrevNextNavBar());
+    }
+
+    function renderStudentNavBar() {
+        return <>
+            <Nav as={Row} className="justify-content-between">
+                <Nav.Item as={Col} sm={5} className='my-2'>
+                    <Nav.Link className='border btn style-button link-body-emphasis'
+                        onClick={(event) => { setAddingStudent(true); moveNextStep(event, addStudentStep, addProjectStep); }}
+                        eventKey={steps[addStudentStep]}>Добавить нового студента</Nav.Link>
+                </Nav.Item>
+                <Nav.Item as={Col} sm={5} className='my-2'>
+                    <Nav.Link className='border btn style-button link-body-emphasis'
+                        onClick={(event) => { setAddingStudent(false); moveNextStep(event, selectStudentStep, addProjectStep) }}
+                        eventKey={steps[selectStudentStep]}>Выбрать существующего студента</Nav.Link>
+                </Nav.Item>
+            </Nav>
+        </>
+    }
+
+    function renderPrevNextNavBar() {
+        let prevNav = currentStepIndex === 0 ? <></> :
+            <Nav.Item as={Col} sm={5} className='mx-2'>
+                <Nav.Link className='border btn style-button-outline link-body-emphasis' onClick={movePrevStep} eventKey={steps[stepPath[currentStepIndex - 1]]}>Назад</Nav.Link>
+            </Nav.Item>
+
+        let nextNav = stepPath[currentStepIndex] + 1 === steps.length ? <></> :
+            <Nav.Item as={Col} sm={5} className='mx-2'>
+                <Nav.Link disabled={addingStudent ? !isStudentFilled : !isStudentSelected} className='border btn style-button-outline link-body-emphasis'
+                    onClick={(event) => currentStepIndex + 1 === stepPath.length ? moveNextStep(event, stepPath[currentStepIndex] + 1) : moveNextStep(event)}
+                    eventKey={steps[stepPath[currentStepIndex + 1]]}>Далее</Nav.Link>
+            </Nav.Item>
+
+        return <>
+            <Nav as={Row} className="justify-content-between" >
+                {prevNav}
+                {nextNav}
+            </Nav>
+        </>
+    }
+
+    return (
+        <>
+            <Row className='justify-content-center'>
+                <Col xs={11} md={10} lg={8}>
+                    <h1 className='mb-4'>Новое научное руководство</h1>
+                    <hr />
+                    <div ><Tab.Container id="left-tabs-example" defaultActiveKey="select-student-method">
+                        <Row className='justify-content-center'>
+                            <Col xs={12} sm={8} className='mb-3'>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="select-student-method">
+                                        <div className='fs-3'>
+                                            Выберите студента, которого берете под научное руководство:
+                                        </div>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="add-student">
+                                        <div className='fs-3'>
+                                            Введите информацию о студенте:
+                                        </div>
+                                        <Form ref={addStudentRef} id="student-form">
+                                            <Form.Group className="mb-3" controlId="meetName">
+                                                <Form.Label>Имя *</Form.Label>
+                                                <Form.Control name="name" onChange={handleStudentChange} required placeholder="Введите название" />
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-3" controlId="meetDesc">
+                                                <Form.Label>Фамилия *</Form.Label>
+                                                <Form.Control name="surname" onChange={handleStudentChange} required placeholder="Введите описание" />
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-3" controlId="meetDesc">
+                                                <Form.Label>Отчество</Form.Label>
+                                                <Form.Control name="middlename" onChange={handleStudentChange} placeholder="Введите описание" />
+                                            </Form.Group>
+                                            <div className="mb-3" controlId="student">
+                                                <label className='mb-2'>Курс *</label>
+                                                <select class="form-select" name="cource" onChange={handleStudentChange} required >
+                                                    <option value="" selected hidden>Выберете курс...</option>
+                                                    <option value="1" >1</option>
+                                                    <option value="2" >2</option>
+                                                    <option value="3" >3</option>
+                                                    <option value="4" >4</option>
+                                                    <option value="5" >5</option>
+                                                </select>
+                                            </div>
+                                            <Form.Group className="mb-3" controlId="meetDesc">
+                                                <Form.Label>Образовательная программа</Form.Label>
+                                                <Form.Control name="education_programme_id" onChange={handleStudentChange} placeholder="education programme id" />
+                                            </Form.Group>
+                                        </Form>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="select-student">
+                                        <div className='fs-3'>
+                                            <Form.Group className="mb-3" controlId="student">
+                                                <Form.Label>Выберете студента:</Form.Label>
+                                                <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" >
+                                                    <option value={-1} selected hidden>Выберете студента...</option>
+                                                    {students ? RenderStudents() : 'Loading...'}
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </div>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="add-project">
+                                        <div className='fs-3'>
+                                            Введите информацию о проекте:
+                                            <Form id="project-form" onSubmit={handleSubmit}>
+                                                <Form.Group className="mb-3" controlId="meetName">
+                                                    <Form.Label>Тема работы *</Form.Label>
+                                                    <Form.Control name="theme" onChange={handleChange} required placeholder="Введите тему" />
+                                                </Form.Group>
+
+                                                <Form.Group className="mb-3" controlId="meetName">
+                                                    <Form.Label>Год выполнения *</Form.Label>
+                                                    <Form.Control type='number' name="year" onChange={handleChange} required placeholder="Введите год" />
+                                                </Form.Group>
+
+                                                <Form.Group className="mb-3" controlId="meetName">
+                                                    <Form.Label>Логин обладателя репозитория *</Form.Label>
+                                                    <Form.Control name="repository_owner_login" onChange={handleChange} required placeholder="Введите логин" />
+                                                </Form.Group>
+
+                                                <Form.Group className="mb-3" controlId="meetName">
+                                                    <Form.Label>Имя репозитория *</Form.Label>
+                                                    <Form.Control name="repository_name" onChange={handleChange} required placeholder="Введите название" />
+                                                </Form.Group>
+                                                <Row className='justify-content-center mx-1'>
+                                                    <Button type="submit" className="style-button mb-3">
+                                                        Взять под научное руководство
+                                                    </Button>
+                                                </Row>
+                                            </Form>
+                                        </div>
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                            <Col xs={12} sm={8}>
+                                {navbar}
+                            </Col>
+                        </Row>
+                    </Tab.Container>
+                    </div>
+                </Col>
+            </Row>
+
+            <Modal show={showAddProjectResult} onHide={CloseRequestResultModal}>
+                {addProjectResult ? RenderRequestResultModal() :
+                    <Modal.Header className="justify-content-md-center">
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    </Modal.Header>}
+            </Modal>
+        </>
+    );
+}
+
+export default AddProject;
