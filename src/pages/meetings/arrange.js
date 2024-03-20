@@ -139,57 +139,52 @@ function ArrangeMeeting() {
                     <h1 className='mb-4'>Назначить встречу</h1>
                     <hr />
                     <div >
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3" controlId="meetName">
-                                <Form.Label>Название *</Form.Label>
-                                <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
-                                <Form.Text className="text-muted">
-                                    Будьте кратки в названии
-                                </Form.Text>
-                            </Form.Group>
+                        <Row className='justify-content-center'>
+                            <Col xs={12} sm={8}>
+                                <Form onSubmit={handleSubmit}>
+                                    <Form.Group className="mb-3" controlId="meetName">
+                                        <Form.Label>Название *</Form.Label>
+                                        <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
+                                        <Form.Text className="text-muted">
+                                            Будьте кратки в названии
+                                        </Form.Text>
+                                    </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="meetDesc">
-                                <Form.Label>Описание</Form.Label>
-                                <Form.Control name="description" onChange={handleChange} placeholder="Введите описание" />
-                                <Form.Text className="text-muted">
-                                    Здесь можно указать детали
-                                </Form.Text>
-                            </Form.Group>
+                                    <Form.Group className="mb-3" controlId="meetDesc">
+                                        <Form.Label>Описание</Form.Label>
+                                        <Form.Control name="description" onChange={handleChange} placeholder="Введите описание" />
+                                    </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="meetTime">
-                                <Form.Label>Дата и время *</Form.Label>
-                                <Form.Control name="meeting_time" onChange={handleChange} required type="datetime-local"
-                                    placeholder="Введите время встречи"
-                                    id="meeting-time"
-                                    min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
-                                />
-                                <Form.Text className="text-muted">
-                                    Здесь можно указать детали
-                                </Form.Text>
-                            </Form.Group>
+                                    <Form.Group className="mb-3" controlId="meetTime">
+                                        <Form.Label>Дата и время *</Form.Label>
+                                        <Form.Control name="meeting_time" onChange={handleChange} required type="datetime-local"
+                                            placeholder="Введите время встречи"
+                                            id="meeting-time"
+                                            min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
+                                        />
+                                    </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="student">
-                                <Form.Label>С кем встреча *</Form.Label>
-                                <Form.Select ref={selectRef} name="student_participant_id" onChange={handleSelectChange} required aria-label="select student" >
-                                    <option value={-1} selected hidden>Выберете студента...</option>
-                                    {students ? RenderStudents() : 'Loading...'}
-                                </Form.Select>
-                                <Form.Text className="text-muted">
-                                    Здесь можно указать детали
-                                </Form.Text>
-                            </Form.Group>
+                                    <Form.Group className="mb-3" controlId="student">
+                                        <Form.Label>С кем встреча *</Form.Label>
+                                        <Form.Select ref={selectRef} name="student_participant_id" onChange={handleSelectChange} required aria-label="select student" >
+                                            <option value={-1} selected hidden>Выберите студента...</option>
+                                            {students ? RenderStudents() : 'Loading...'}
+                                        </Form.Select>
+                                    </Form.Group>
 
-                            <Form.Group className="mb-3 " controlId="isOnline">
-                                <label class="style-checkmark-label">
-                                    <input name="is_online" onChange={handleCehckboxChange} type="checkbox" class="style-default-checkmark" />
-                                    <span class="style-checkmark"></span>
-                                    Онлайн
-                                </label>
-                            </Form.Group>
-                            <Button type="submit" className="style-button">
-                                Назначить
-                            </Button>
-                        </Form>
+                                    <Form.Group className="mb-3 " controlId="isOnline">
+                                        <label class="style-checkmark-label">
+                                            <input name="is_online" onChange={handleCehckboxChange} type="checkbox" class="style-default-checkmark" />
+                                            <span class="style-checkmark"></span>
+                                            Онлайн
+                                        </label>
+                                    </Form.Group>
+                                    <Button type="submit" className="style-button">
+                                        Назначить
+                                    </Button>
+                                </Form>
+                            </Col>
+                        </Row>
                     </div>
                 </Col>
             </Row>
