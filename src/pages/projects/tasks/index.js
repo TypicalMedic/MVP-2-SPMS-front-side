@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import ProjectSidebar from '../ProjectSidebar';
 import { Col, Row } from 'react-bootstrap';
-import { Container, Card, Badge, Button, Accordion } from 'react-bootstrap';
+import { Container, Card, Badge, Button, Accordion, Spinner } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from "react-router-dom";
 
@@ -40,34 +40,38 @@ function Tasks() {
         </Col>
       )
     }
-    return tasks.map((task) =>
-      <Col>
-        <Card className="mb-4 style-outline">
-          <Card.Header>#{task.id} <Badge pill bg="info" className='style-bg'>{task.status}</Badge></Card.Header>
-          <Card.Body>
-            <Card.Title className='mb-3'>
-              <LinkContainer to={"./" + task.id}>
-                <Link className="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-50-hover">{task.name}</Link>
-              </LinkContainer>
-            </Card.Title>
-            <Card.Subtitle className="mb-2">
-              до: {task.deadline}
-            </Card.Subtitle>
-            <Card.Text className="text-muted">
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header> Описание...</Accordion.Header>
-                  <Accordion.Body>
-                    {task.description}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-             
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </Col>
-    )
+    return <Row xs={1} sm={1} md={2} xl={4}>
+      {
+        tasks.map((task) =>
+          <Col>
+            <Card className="mb-4 style-outline">
+              <Card.Header>#{task.id} <Badge pill bg="info" className='style-bg'>{task.status}</Badge></Card.Header>
+              <Card.Body>
+                <Card.Title className='mb-3'>
+                  <LinkContainer to={"./" + task.id}>
+                    <Link className="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-50-hover">{task.name}</Link>
+                  </LinkContainer>
+                </Card.Title>
+                <Card.Subtitle className="mb-2">
+                  до: {task.deadline}
+                </Card.Subtitle>
+                <Card.Text className="text-muted">
+                  <Accordion>
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header> Описание...</Accordion.Header>
+                      <Accordion.Body>
+                        {task.description}
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
+
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        )
+      }
+    </Row>
   }
 
   return (
@@ -79,10 +83,12 @@ function Tasks() {
         <Col xs={12} sm={12} md={8} xl={10} className='px-5'>
           <h3>Задания проекта #{projectId}</h3>
           <hr />
-          <Row xs={1} sm={1} md={2} xl={4}>
-            {
-              tasks ? renderTasks() : 'Loading...'}
-          </Row>
+          {tasks ? renderTasks() :
+            <Row className="justify-content-md-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </Row>}
         </Col>
       </Row>
     </>

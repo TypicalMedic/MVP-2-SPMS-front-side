@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import ProjectSidebar from './ProjectSidebar';
-import { Col, Row, ListGroup } from 'react-bootstrap';
+import { Col, Row, ListGroup, Spinner } from 'react-bootstrap';
 
 
 import { useParams } from "react-router-dom";
@@ -69,7 +69,13 @@ function Commits() {
                     <hr />
                     <div>
                         <ListGroup className=''>
-                            {commits ? renderCommits() : 'Loading...'}
+                            {commits ? renderCommits() :
+                                <Row className="justify-content-md-center">
+                                    <Spinner animation="border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+                                </Row>
+                            }
                         </ListGroup>
                     </div>
                 </Col>

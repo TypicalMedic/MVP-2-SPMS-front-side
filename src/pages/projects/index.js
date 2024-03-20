@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
-import { Container, Row, Card, Badge, Button, Col } from 'react-bootstrap';
+import { Container, Row, Card, Badge, Button, Col, Spinner } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from "react-router-dom";
- 
+
 const cookies = new Cookies();
 
 const reqOptions = {
@@ -32,7 +32,7 @@ function Projects() {
                     <h1>Projects</h1>
                     <div>
                         {projects ? projects.map((project) =>
-                            <Card  className="mb-4 style-outline">
+                            <Card className="mb-4 style-outline">
                                 <Card.Header>#{project.id} <Badge pill className='style-bg'>{project.status}</Badge> <Badge pill className='style-bg'>{project.stage}</Badge></Card.Header>
                                 <Card.Body>
                                     <Card.Title className='mb-4'>
@@ -49,7 +49,13 @@ function Projects() {
                                     {/* <Button variant="outline-light" >Подробнее...</Button> */}
                                 </Card.Body>
                             </Card>
-                        ) : 'Loading...'}
+                        ) :
+                            <Row className="justify-content-md-center">
+                                <Spinner animation="border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
+                            </Row>
+                        }
                     </div>
                 </Col>
             </Row>
