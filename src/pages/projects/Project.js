@@ -63,10 +63,16 @@ function Project() {
                                             </LinkContainer>
                                         </Row>
                                         <Row sm={1} lg={3}>
+                                            {project.cloud_folder_link === "" ?
+                                                <Button variant="outline-warning" className='mb-3' disabled>Проекта нет в облачном хранилище</Button>
+                                                : <Button as="a" href={project.cloud_folder_link} target="_blank" rel="noopener noreferrer" className='style-button mb-3'>Открыть папку проекта</Button>
+                                            }
+                                        </Row>
+                                        {/* <Row sm={1} lg={3}>
                                             <LinkContainer as={Col} to={"/"}>
                                                 <Button className='style-button mb-3'>Открыть папку проекта</Button>
                                             </LinkContainer>
-                                        </Row>
+                                        </Row> */}
                                     </Row>
                                 </Col>
                             </Row>
