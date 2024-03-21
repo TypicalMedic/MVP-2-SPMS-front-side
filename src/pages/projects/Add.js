@@ -5,7 +5,7 @@ import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 
-const getStudentReqOptions = {
+const getReqOptions = {
     method: "GET",
     mode: "cors",
     cache: "default",
@@ -31,6 +31,7 @@ function AddProject() {
     const steps = ["select-student-method", "add-student", "select-student", "add-project"];
 
     const [students, setStudents] = useState(null);
+    const [edprogs, setEdprogs] = useState(null);
     const [currentStepIndex, setCurrentStep] = useState(0);
     const [navbar, setNavbar] = useState(<></>);
     const [formData, setFormData] = useState({});
@@ -68,9 +69,13 @@ function AddProject() {
             "cource": 1,
             "education_programme_id": 1
         });
-        fetch('http://127.0.0.1:8080/students', getStudentReqOptions)
+        fetch('http://127.0.0.1:8080/students', getReqOptions)
             .then(response => response.json())
             .then(json => setStudents(json["students"]))
+            .catch(error => console.error(error));
+        fetch('http://127.0.0.1:8080/universities/1/edprogrammes', getReqOptions)
+            .then(response => response.json())
+            .then(json => setEdprogs(json["programmes"]))
             .catch(error => console.error(error));
         resetSelect();
         renderNavBar();
@@ -164,6 +169,12 @@ function AddProject() {
             </option>)
     }
 
+    function RenderEdProgrammes() {
+        return edprogs.map((edprog) =>
+            <option value={edprog.id}>
+                {`${edprog.name}`}
+            </option>)
+    }
     function OpenRequestResultModal() {
         setShowAddProjectesult(true);
     }
@@ -251,12 +262,12 @@ function AddProject() {
 
     function renderPrevNextNavBar() {
         let prevNav = currentStepIndex === 0 ? <></> :
-            <Nav.Item as={Col} sm={5} className='mx-2'>
+            <Nav.Item as={Col} sm={5} className='my-2'>
                 <Nav.Link className='border btn style-button-outline link-body-emphasis' onClick={movePrevStep} eventKey={steps[stepPath[currentStepIndex - 1]]}>Назад</Nav.Link>
             </Nav.Item>
 
         let nextNav = stepPath[currentStepIndex] + 1 === steps.length ? <></> :
-            <Nav.Item as={Col} sm={5} className='mx-2'>
+            <Nav.Item as={Col} sm={5} className='my-2'>
                 <Nav.Link disabled={addingStudent ? !isStudentFilled : !isStudentSelected} className='border btn style-button-outline link-body-emphasis'
                     onClick={(event) => currentStepIndex + 1 === stepPath.length ? moveNextStep(event, stepPath[currentStepIndex] + 1) : moveNextStep(event)}
                     eventKey={steps[stepPath[currentStepIndex + 1]]}>Далее</Nav.Link>
@@ -315,10 +326,13 @@ function AddProject() {
                                                     <option value="5" >5</option>
                                                 </select>
                                             </div>
-                                            <Form.Group className="mb-3" controlId="meetDesc">
-                                                <Form.Label>Образовательная программа</Form.Label>
-                                                <Form.Control name="education_programme_id" onChange={handleStudentChange} placeholder="education programme id" />
-                                            </Form.Group>
+                                            <div className="mb-3" controlId="student">
+                                                <label className='mb-2'>Образовательная программа *</label>
+                                                <select class="form-select" name="education_programme_id" onChange={handleStudentChange} required >
+                                                    <option value="" selected hidden>Выберете программу...</option>
+                                                    {edprogs ? RenderEdProgrammes() : SpinnerCenter()}
+                                                </select>
+                                            </div>
                                         </Form>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="select-student">
@@ -328,7 +342,7 @@ function AddProject() {
                                                     <Form.Label>Выберете студента:</Form.Label>
                                                     <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" >
                                                         <option value={-1} selected hidden>Выберете студента...</option>
-                                                       {RenderStudents()}
+                                                        {RenderStudents()}
                                                     </Form.Select>
                                                 </Form.Group>
                                             </div>
