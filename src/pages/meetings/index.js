@@ -51,7 +51,7 @@ function Meetings() {
                         {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> <Badge pill className='style-bg'>{meeting.status}</Badge>
                     </h5>
                     <div className=''>
-                        Студент: <LinkContainer to={"/projects/" + 3} className='fst-italic' title={meeting.student.project_theme}>
+                        Студент: <LinkContainer to={"/projects/" + meeting.student.project_id} className='fst-italic' title={meeting.student.project_theme}>
                             <Link className="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-50-hover">
                                 {meeting.student.name}, {meeting.student.cource} курс
                             </Link>
