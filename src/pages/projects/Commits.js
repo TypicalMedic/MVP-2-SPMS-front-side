@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import ProjectSidebar from './ProjectSidebar';
 import SpinnerCenter from 'pages/shared/Spinner';
+import {FormatDateTime} from 'pages/shared/FormatDates';
 import { Col, Row, ListGroup, Spinner } from 'react-bootstrap';
 
 
@@ -43,8 +44,8 @@ function Commits() {
         }
         return commits.map((commit) =>
             <Row as="li" className="d-flex justify-content-between align-items-start">
-                <Col xs={12} sm={12} md={3} lg={2} xxl={1} className='fst-italic text-secondary'>
-                    {commit.date_created}
+                <Col xs={12} sm={12} md={3} lg={2} xxl="auto" className='fst-italic text-secondary'>
+                    {FormatDateTime(new Date(commit.date_created))}
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>

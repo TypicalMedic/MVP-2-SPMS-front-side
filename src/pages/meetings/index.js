@@ -4,6 +4,7 @@ import { Container, Row, Card, Badge, Button, Col, Alert, Spinner } from 'react-
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from 'react-router-dom';
 import SpinnerCenter from 'pages/shared/Spinner';
+import {FormatDate, FormatDateTime}from 'pages/shared/FormatDates';
 
 const cookies = new Cookies();
 
@@ -19,7 +20,7 @@ const reqOptions = {
 
 function Meetings() {
     const [meetings, setMeetings] = useState(null);
-    const [meetingFromTime, setMeetingFromTime] = useState("...")
+    const [meetingFromTime, setMeetingFromTime] = useState(new Date())
 
     useEffect(() => {
         const currentTime = new Date(Date.now());
@@ -29,7 +30,7 @@ function Meetings() {
             .then(response => response.json())
             .then(json => setMeetings(json["meetings"]))
             .catch(error => console.error(error));
-        setMeetingFromTime(currentTime.toUTCString())
+        setMeetingFromTime(currentTime)
     }, []);
 
     function ParseMeetings() {
@@ -42,8 +43,8 @@ function Meetings() {
         }
         return meetings.map((meeting) => <>
             <Row as="li" className="d-flex justify-content-between align-items-start ">
-                <Col xs={12} sm={12} md={3} lg={2} xxl={1} className='fst-italic text-secondary'>
-                    {meeting.time}
+                <Col xs={12} sm={12} md={3} lg={2} xxl="auto" className='fst-italic text-secondary'>
+                    {FormatDateTime(new Date(meeting.time))}
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>
@@ -77,7 +78,7 @@ function Meetings() {
         <>
             <Row className='justify-content-center'>
                 <Col xs={11} md={10} lg={8}>
-                    <h1 className='mb-4'>Встречи с {meetingFromTime}</h1>
+                    <h1 className='mb-4'>Встречи с {FormatDate(meetingFromTime)}</h1>
                     <hr />
                     <div >
                         {meetings ? ParseMeetings() : SpinnerCenter()}
