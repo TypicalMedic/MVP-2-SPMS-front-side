@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import { Container, Row, Card, Badge, Button, Col, Alert, Form, Modal, Spinner } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from 'react-router-dom';
+import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 
@@ -168,7 +169,9 @@ function ArrangeMeeting() {
                                         <Form.Label>С кем встреча *</Form.Label>
                                         <Form.Select ref={selectRef} name="student_participant_id" onChange={handleSelectChange} required aria-label="select student" >
                                             <option value={-1} selected hidden>Выберите студента...</option>
-                                            {students ? RenderStudents() : 'Loading...'}
+                                            {students ? RenderStudents() : 
+                                            <option disabled>{SpinnerCenter()}</option>
+                                            }
                                         </Form.Select>
                                     </Form.Group>
 
@@ -191,9 +194,7 @@ function ArrangeMeeting() {
             <Modal show={showAddMeetingResult} onHide={CloseRequestResultModal}>
                 {addMeetingResult ? RenderRequestResultModal() :
                     <Modal.Header className="justify-content-md-center">
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
+                        {SpinnerCenter()}
                     </Modal.Header>}
             </Modal>
         </>

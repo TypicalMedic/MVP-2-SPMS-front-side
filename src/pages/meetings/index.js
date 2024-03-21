@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import { Container, Row, Card, Badge, Button, Col, Alert, Spinner } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from 'react-router-dom';
+import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 
@@ -79,13 +80,7 @@ function Meetings() {
                     <h1 className='mb-4'>Встречи с {meetingFromTime}</h1>
                     <hr />
                     <div >
-                        {meetings ? ParseMeetings() :
-                            <Row className="justify-content-md-center">
-                                <Spinner animation="border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </Spinner>
-                            </Row>
-                        }
+                        {meetings ? ParseMeetings() : SpinnerCenter()}
                     </div>
                 </Col>
             </Row>

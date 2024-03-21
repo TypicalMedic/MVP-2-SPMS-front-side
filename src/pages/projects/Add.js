@@ -1,6 +1,7 @@
 import { Container, Row, Card, Badge, Button, Col, Alert, Form, Tab, Nav, Modal, Spinner } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import React, { useState, useEffect, useRef } from 'react';
+import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 
@@ -85,7 +86,9 @@ function AddProject() {
         // set select as invalid, so student has to be chosen
         const element = selectRef.current;
         setIsStudentSelected(false)
-        element.setCustomValidity("Выберите студента!");
+        if (element) {
+            element.setCustomValidity("Выберите студента!");
+        }
     }
 
     const handleChange = (event) => {
@@ -127,7 +130,7 @@ function AddProject() {
                     setAddProjectResult(status)
                     return
                 }
-                const data  = await response.json();
+                const data = await response.json();
                 formData["student_id"] = data["student_id"];
             }
             prepareProjectReqBody();
@@ -319,15 +322,18 @@ function AddProject() {
                                         </Form>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="select-student">
-                                        <div className='fs-3'>
-                                            <Form.Group className="mb-3" controlId="student">
-                                                <Form.Label>Выберете студента:</Form.Label>
-                                                <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" >
-                                                    <option value={-1} selected hidden>Выберете студента...</option>
-                                                    {students ? RenderStudents() : 'Loading...'}
-                                                </Form.Select>
-                                            </Form.Group>
-                                        </div>
+                                        {students ?
+                                            <div className='fs-3'>
+                                                <Form.Group className="mb-3" controlId="student">
+                                                    <Form.Label>Выберете студента:</Form.Label>
+                                                    <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" >
+                                                        <option value={-1} selected hidden>Выберете студента...</option>
+                                                       {RenderStudents()}
+                                                    </Form.Select>
+                                                </Form.Group>
+                                            </div>
+                                            : SpinnerCenter()}
+
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="add-project">
                                         <div className='fs-3'>
@@ -374,9 +380,7 @@ function AddProject() {
             <Modal show={showAddProjectResult} onHide={CloseRequestResultModal}>
                 {addProjectResult ? RenderRequestResultModal() :
                     <Modal.Header className="justify-content-md-center">
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
+                        {SpinnerCenter()}
                     </Modal.Header>}
             </Modal>
         </>
