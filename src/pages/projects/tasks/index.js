@@ -7,6 +7,7 @@ import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from "react-router-dom";
 
 import { useParams } from "react-router-dom";
+import { FormatDateTime } from 'pages/shared/FormatDates';
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -53,7 +54,7 @@ function Tasks() {
                   </LinkContainer>
                 </Card.Title>
                 <Card.Subtitle className="mb-2">
-                  до: {task.deadline}
+                  до: {FormatDateTime(new Date(task.deadline))}
                 </Card.Subtitle>
                 <Card.Text className="text-muted">
                   {task.cloud_folder_link === "" ?
