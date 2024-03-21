@@ -5,6 +5,7 @@ import { Container, Row, Card, Badge, Button, Col, Alert, Form, Modal, Spinner }
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from 'react-router-dom';
 import SpinnerCenter from 'pages/shared/Spinner';
+import ProjectSidebar from '../ProjectSidebar';
 
 const cookies = new Cookies();
 
@@ -19,7 +20,7 @@ let postMeetingReqOptions = {
     },
 };
 
-function AddTask(){
+function AddTask() {
     const [formData, setFormData] = useState({});
     const [showAddTaskResult, setShowAddMeetingResult] = useState(false);
     const [addTaskResult, setAddMeetingResult] = useState(null);
@@ -93,43 +94,48 @@ function AddTask(){
 
     return (
         <>
-            <Row className='justify-content-center'>
-                <Col xs={11} md={10} lg={8}>
-                    <h1 className='mb-4'>Назначить задание</h1>
-                    <hr />
-                    <div >
-                        <Row className='justify-content-center'>
-                            <Col xs={12} sm={8}>
-                                <Form onSubmit={handleSubmit}>
-                                    <Form.Group className="mb-3" controlId="meetName">
-                                        <Form.Label>Название *</Form.Label>
-                                        <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
-                                        <Form.Text className="text-muted">
-                                            Будьте кратки в названии
-                                        </Form.Text>
-                                    </Form.Group>
+            <Row className='m-2'>
+                <Col Col xs={12} sm={12} md={4} xl={2}>
+                    <ProjectSidebar projectId={projectId} />
+                </Col>
+                <Col xs={12} sm={12} md={8} xl={10} className='px-5'>
+                    <Row className='justify-content-center'>
+                        <h3 className='mb-4'>Назначить задание</h3>
+                        <hr />
+                        <div >
+                            <Row className='justify-content-start'>
+                                <Col xs={12} sm={8}>
+                                    <Form onSubmit={handleSubmit}>
+                                        <Form.Group className="mb-3" controlId="meetName">
+                                            <Form.Label>Название *</Form.Label>
+                                            <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
+                                            <Form.Text className="text-muted">
+                                                Будьте кратки в названии
+                                            </Form.Text>
+                                        </Form.Group>
 
-                                    <Form.Group className="mb-3" controlId="meetDesc">
-                                        <Form.Label>Описание</Form.Label>
-                                        <Form.Control as="textarea" rows={5} name="description" onChange={handleChange} placeholder="Введите описание" />
-                                    </Form.Group>
+                                        <Form.Group className="mb-3" controlId="meetDesc">
+                                            <Form.Label>Описание</Form.Label>
+                                            <Form.Control as="textarea" rows={5} name="description" onChange={handleChange} placeholder="Введите описание" />
+                                        </Form.Group>
 
-                                    <Form.Group className="mb-3" controlId="meetTime">
-                                        <Form.Label>Деделайн *</Form.Label>
-                                        <Form.Control name="deadline" onChange={handleChange} required type="datetime-local"
-                                            placeholder="Введите время встречи"
-                                            id="meeting-time"
-                                            min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
-                                        />
-                                    </Form.Group>
+                                        <Form.Group className="mb-3" controlId="meetTime">
+                                            <Form.Label>Деделайн *</Form.Label>
+                                            <Form.Control name="deadline" onChange={handleChange} required type="datetime-local"
+                                                placeholder="Введите время встречи"
+                                                id="meeting-time"
+                                                min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
+                                            />
+                                        </Form.Group>
 
-                                    <Button type="submit" className="style-button">
-                                        Назначить
-                                    </Button>
-                                </Form>
-                            </Col>
-                        </Row>
-                    </div>
+                                        <Button type="submit" className="style-button">
+                                            Назначить
+                                        </Button>
+                                    </Form>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Row>
                 </Col>
             </Row>
             <Modal show={showAddTaskResult} onHide={CloseRequestResultModal}>

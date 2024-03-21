@@ -6,10 +6,11 @@
   background-color: darkcyan !important;
 }
 
-.style-accordion>button {
+.style-accordion>.accordion-button {
   border-color: darkcyan;
   background-color: transparent;
   color: white !important;
+  height:4ch!important;
 }
 
 .style-accordion>.accordion-button:not(.collapsed) {
