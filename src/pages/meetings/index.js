@@ -44,7 +44,7 @@ function Meetings() {
         return meetings.map((meeting) => <>
             <Row as="li" className="d-flex justify-content-between align-items-start ">
                 <Col xs={12} sm={12} md={3} lg={2} xxl="auto" className='fst-italic text-secondary'>
-                    {FormatDateTime(new Date(meeting.time))}
+                    {FormatDateTime(meeting.time)}
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>
@@ -78,7 +78,7 @@ function Meetings() {
         <>
             <Row className='justify-content-center'>
                 <Col xs={11} md={10} lg={8}>
-                    <h1 className='mb-4'>Встречи с {FormatDate(meetingFromTime)}</h1>
+                    <h1 className='mb-4'>Встречи с {FormatDate(meetingFromTime.toISOString())}</h1>
                     <hr />
                     <div >
                         {meetings ? ParseMeetings() : SpinnerCenter()}

@@ -54,7 +54,7 @@ function Tasks() {
                   </LinkContainer>
                 </Card.Title>
                 <Card.Subtitle className="mb-2">
-                  до: {FormatDateTime(new Date(task.deadline))}
+                  до: {FormatDateTime(task.deadline)}
                 </Card.Subtitle>
                 <Card.Text className="text-muted">
                   {task.cloud_folder_link === "" ?

@@ -45,7 +45,7 @@ function Commits() {
         return commits.map((commit) =>
             <Row as="li" className="d-flex justify-content-between align-items-start">
                 <Col xs={12} sm={12} md={3} lg={2} xxl="auto" className='fst-italic text-secondary'>
-                    {FormatDateTime(new Date(commit.date_created))}
+                    {FormatDateTime(commit.date_created)}
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>
