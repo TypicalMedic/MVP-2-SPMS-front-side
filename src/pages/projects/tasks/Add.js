@@ -1,0 +1,145 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from "react-router-dom";
+import Cookies from 'universal-cookie';
+import { Container, Row, Card, Badge, Button, Col, Alert, Form, Modal, Spinner } from 'react-bootstrap';
+import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import { Link } from 'react-router-dom';
+import SpinnerCenter from 'pages/shared/Spinner';
+
+const cookies = new Cookies();
+
+let postMeetingReqOptions = {
+    method: "POST",
+    mode: "cors",
+    cache: "default",
+    credentials: 'include',
+    headers: {
+        "Professor-Id": cookies.get('professor_id'),
+        "Content-Type": "application/json",
+    },
+};
+
+function AddTask(){
+    const [formData, setFormData] = useState({});
+    const [showAddTaskResult, setShowAddMeetingResult] = useState(false);
+    const [addTaskResult, setAddMeetingResult] = useState(null);
+
+    let { projectId } = useParams();
+
+    useEffect(() => {
+        // setting task defaults
+        setFormData({
+            "name": "",
+            "description": "",
+            "deadline": ""
+        });
+    }, []);
+
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setFormData(values => ({ ...values, [name]: value }));
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        event.target.reset();
+        prepareReqBody();
+        OpenRequestResultModal()
+        try {
+            const response = await fetch(`http://127.0.0.1:8080/projects/${projectId}/tasks/add`, postMeetingReqOptions)
+            const status = response.status;
+            console.log("Responce status:", status);
+            setAddMeetingResult(status)
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    function prepareReqBody() {
+        formData["deadline"] += ":00.000Z";
+        postMeetingReqOptions["body"] = JSON.stringify(formData)
+    }
+
+
+    function OpenRequestResultModal() {
+        setShowAddMeetingResult(true);
+    }
+    function CloseRequestResultModal() {
+        setShowAddMeetingResult(false);
+        setAddMeetingResult(null);
+    }
+
+    function RenderRequestResultModal() {
+        let header = "Задание назначено!";
+        let body = "Вы можете просмотреть его в заданиях проекта.";
+        if (addTaskResult != 200) {
+            header = "Произошла ошибка при назанчении задания!";
+            body = `Код ошибки: ${addTaskResult}. Обратитесь в службу поддержки, если прблема не устранится.`;
+        }
+        return <>
+            <Modal.Header>
+                <Modal.Title>{header}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{body}</Modal.Body>
+            <Modal.Footer>
+                <Button className='style-button' onClick={CloseRequestResultModal}>
+                    ОК
+                </Button>
+            </Modal.Footer>
+        </>
+    }
+
+    return (
+        <>
+            <Row className='justify-content-center'>
+                <Col xs={11} md={10} lg={8}>
+                    <h1 className='mb-4'>Назначить задание</h1>
+                    <hr />
+                    <div >
+                        <Row className='justify-content-center'>
+                            <Col xs={12} sm={8}>
+                                <Form onSubmit={handleSubmit}>
+                                    <Form.Group className="mb-3" controlId="meetName">
+                                        <Form.Label>Название *</Form.Label>
+                                        <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
+                                        <Form.Text className="text-muted">
+                                            Будьте кратки в названии
+                                        </Form.Text>
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="meetDesc">
+                                        <Form.Label>Описание</Form.Label>
+                                        <Form.Control as="textarea" rows={5} name="description" onChange={handleChange} placeholder="Введите описание" />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="meetTime">
+                                        <Form.Label>Деделайн *</Form.Label>
+                                        <Form.Control name="deadline" onChange={handleChange} required type="datetime-local"
+                                            placeholder="Введите время встречи"
+                                            id="meeting-time"
+                                            min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
+                                        />
+                                    </Form.Group>
+
+                                    <Button type="submit" className="style-button">
+                                        Назначить
+                                    </Button>
+                                </Form>
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
+            <Modal show={showAddTaskResult} onHide={CloseRequestResultModal}>
+                {addTaskResult ? RenderRequestResultModal() :
+                    <Modal.Header className="justify-content-md-center">
+                        {SpinnerCenter()}
+                    </Modal.Header>}
+            </Modal>
+        </>
+    );
+};
+
+export default AddTask;

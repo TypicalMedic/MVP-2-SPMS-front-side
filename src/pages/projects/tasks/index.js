@@ -58,7 +58,7 @@ function Tasks() {
                 <Card.Text className="text-muted">
                   <Accordion>
                     <Accordion.Item eventKey="0">
-                      <Accordion.Header> Описание...</Accordion.Header>
+                      <Accordion.Header className='style-accordion'> Описание...</Accordion.Header>
                       <Accordion.Body>
                         {task.description}
                       </Accordion.Body>
