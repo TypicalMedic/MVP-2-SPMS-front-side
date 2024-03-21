@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import ProjectSidebar from './ProjectSidebar';
+import SpinnerCenter from 'pages/shared/Spinner';
 import { Col, Row, ListGroup, Spinner } from 'react-bootstrap';
 
 
@@ -67,17 +68,7 @@ function Commits() {
                 <Col xs={12} sm={12} md={8} xl={10} className='px-5'>
                     <h3 className='mb-4'>Коммиты проекта #{projectId} за последние 30 дней</h3>
                     <hr />
-                    <div>
-                        <ListGroup className=''>
-                            {commits ? renderCommits() :
-                                <Row className="justify-content-md-center">
-                                    <Spinner animation="border" role="status">
-                                        <span className="visually-hidden">Loading...</span>
-                                    </Spinner>
-                                </Row>
-                            }
-                        </ListGroup>
-                    </div>
+                    {commits ? renderCommits() : SpinnerCenter()}
                 </Col>
             </Row>
         </>

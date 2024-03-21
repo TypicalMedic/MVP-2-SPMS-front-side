@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import ProjectSidebar from 'pages/projects/ProjectSidebar';
 import { useParams } from "react-router-dom";
 import { Col, Row, Badge, Container } from 'react-bootstrap';
+import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -57,7 +58,7 @@ function Task() {
                                 </Col>
                             </Row>
                         </div>
-                    </> : 'Loading...'}
+                    </> : SpinnerCenter()}
                 </Col>
             </Row>
         </>

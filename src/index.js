@@ -10,6 +10,7 @@ import Commits from "./pages/projects/Commits";
 import Meetings from "./pages/meetings";
 import ArrangeMeeting from "./pages/meetings/arrange";
 import Tasks from "./pages/projects/tasks";
+import AddTask from "./pages/projects/tasks/Add";
 import Task from "./pages/projects/tasks/task";
 import Students from "./pages/students";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,7 +32,7 @@ export default function App() {
                 <Route path=":taskId/">
                   <Route index element={<Task />} />
                 </Route>
-                <Route path="add" element={<Home />} />
+                <Route path="add" element={<AddTask />} />
               </Route>
             </Route>
             <Route path="add" element={<Home />} />

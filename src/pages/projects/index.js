@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import { Container, Row, Card, Badge, Button, Col, Spinner } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from "react-router-dom";
+import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 
@@ -49,13 +50,7 @@ function Projects() {
                                     {/* <Button variant="outline-light" >Подробнее...</Button> */}
                                 </Card.Body>
                             </Card>
-                        ) :
-                            <Row className="justify-content-md-center">
-                                <Spinner animation="border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </Spinner>
-                            </Row>
-                        }
+                        ) : SpinnerCenter()}
                     </div>
                 </Col>
             </Row>
