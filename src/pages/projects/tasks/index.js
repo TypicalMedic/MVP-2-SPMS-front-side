@@ -57,19 +57,18 @@ function Tasks() {
                 </Card.Subtitle>
                 <Card.Text className="text-muted">
                   {task.cloud_folder_link === "" ?
-                    <Button variant="outline-warning" className='mb-3'  disabled>Задания нет в облачном хранилище</Button>
+                    <Button variant="outline-warning" className='mb-3' disabled>Задания нет в облачном хранилище</Button>
                     : <Button as="a" href={task.cloud_folder_link} target="_blank" rel="noopener noreferrer" className='style-button-outline mb-3'>Открыть папку с заданием</Button>
                   }
-
-                  <Accordion>
-                    <Accordion.Item eventKey="0">
-                      <Accordion.Header className='style-accordion'> Описание...</Accordion.Header>
-                      <Accordion.Body>
-                        {task.description}
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  </Accordion>
-
+                  {task.description === "" ? <></> :
+                    <Accordion>
+                      <Accordion.Item eventKey="0">
+                        <Accordion.Header className='style-accordion'> Описание...</Accordion.Header>
+                        <Accordion.Body>
+                          {task.description}
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>}
                 </Card.Text>
               </Card.Body>
             </Card>
