@@ -56,6 +56,11 @@ function Tasks() {
                   до: {task.deadline}
                 </Card.Subtitle>
                 <Card.Text className="text-muted">
+                  {task.cloud_folder_link === "" ?
+                    <Button variant="outline-warning" className='mb-3'  disabled>Задания нет в облачном хранилище</Button>
+                    : <Button as="a" href={task.cloud_folder_link} target="_blank" rel="noopener noreferrer" className='style-button-outline mb-3'>Открыть папку с заданием</Button>
+                  }
+
                   <Accordion>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header className='style-accordion'> Описание...</Accordion.Header>
@@ -83,6 +88,9 @@ function Tasks() {
         <Col xs={12} sm={12} md={8} xl={10} className='px-5'>
           <h3>Задания проекта #{projectId}</h3>
           <hr />
+          <LinkContainer to={"./add"}>
+            <Button className='style-button mb-3'>Назначить задание</Button>
+          </LinkContainer>
           {tasks ? renderTasks() :
             <Row className="justify-content-md-center">
               <Spinner animation="border" role="status">
