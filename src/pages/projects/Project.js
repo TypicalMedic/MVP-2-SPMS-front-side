@@ -31,10 +31,10 @@ function Project() {
     return (
         <>
             <Row className='m-2'>
-                <Col xs={12} sm={12} md={4} xl={2}>
+                <Col xs={12} sm={12} md={4} lg={2}>
                     <ProjectSidebar projectId={projectId} />
                 </Col>
-                <Col xs={12} sm={12} md={8} xl={10} className='px-5'>
+                <Col xs={12} sm={12} md={8} lg={10} className='px-5'>
                     {project ? <>
                         <h3 className='mb-4'>#{projectId} {project.theme}</h3>
                         <hr />
@@ -57,12 +57,12 @@ function Project() {
                                     <Row>
                                         <div className='fs-3 mb-2 fw-medium'>Действия</div>
                                         <div>чипи чипи чапа чапа</div>
-                                        <Row sm={1} lg={3}>
+                                        <Row sm={1} lg={1} xl={3}>
                                             <LinkContainer as={Col} to={"./tasks/add"}>
                                                 <Button className='style-button mb-3'>Назначить задание</Button>
                                             </LinkContainer>
                                         </Row>
-                                        <Row sm={1} lg={3}>
+                                        <Row sm={1} lg={1} xl={3}>
                                             {project.cloud_folder_link === "" ?
                                                 <Button variant="outline-warning" className='mb-3' disabled>Проекта нет в облачном хранилище</Button>
                                                 : <Button as="a" href={project.cloud_folder_link} target="_blank" rel="noopener noreferrer" className='style-button mb-3'>Открыть папку проекта</Button>
