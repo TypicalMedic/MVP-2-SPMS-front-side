@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import Projects from "./pages/projects";
 import Project from "./pages/projects/Project";
+import ProjectStats from "./pages/projects/Stats";
 import AddProject from "./pages/projects/Add";
 import Commits from "./pages/projects/Commits";
 import Meetings from "./pages/meetings";
@@ -27,6 +28,7 @@ export default function App() {
             <Route path=":projectId/">
               <Route index element={<Project />} />
               <Route path="commits" element={<Commits />} />
+              <Route path="stats" element={<ProjectStats />} />
               <Route path="tasks" >
                 <Route index element={<Tasks />} />
                 <Route path=":taskId/">
