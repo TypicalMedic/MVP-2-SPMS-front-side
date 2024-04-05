@@ -72,8 +72,12 @@ function ArrangeMeeting() {
 
     const handleSelectChange = (event) => {
         // you cannot select default option anymore, so we can just make it valid
+        const vals = event.target.value.split(";");
+        const proj = parseInt(vals[1]);
+        const stud = parseInt(vals[0]);
+        setFormData(values=>({...values, ["student_participant_id"]:stud}))
+        setFormData(values=>({...values, ["project_id"]:proj}))
         event.target.setCustomValidity("");
-        handleChange(event);
     }
 
     async function handleSubmit(event) {
@@ -100,7 +104,7 @@ function ArrangeMeeting() {
 
     function RenderStudents() {
         return students.map((student) =>
-            <option value={student.id}>
+            <option value={`${student.id};${student.project_id}`}>
                 {`${student.surname} ${student.name[0]}. ${student.middlename[0]}., ${student.cource} курс ${student.education_programme}, ${student.project_theme}`}
             </option>)
     }
@@ -167,14 +171,13 @@ function ArrangeMeeting() {
 
                                     <Form.Group className="mb-3" controlId="student">
                                         <Form.Label>С кем встреча *</Form.Label>
-                                        <Form.Select ref={selectRef} name="student_participant_id" onChange={handleSelectChange} required aria-label="select student" >
+                                        <Form.Select ref={selectRef} name="-" onChange={handleSelectChange} required aria-label="select student" >
                                             <option value={-1} selected hidden>Выберите студента...</option>
-                                            {students ? RenderStudents() : 
-                                            <option disabled>{SpinnerCenter()}</option>
+                                            {students ? RenderStudents() :
+                                                <option disabled>{SpinnerCenter()}</option>
                                             }
                                         </Form.Select>
                                     </Form.Group>
-
                                     <Form.Group className="mb-3 " controlId="isOnline">
                                         <label class="style-checkmark-label">
                                             <input name="is_online" onChange={handleCehckboxChange} type="checkbox" class="style-default-checkmark" />
