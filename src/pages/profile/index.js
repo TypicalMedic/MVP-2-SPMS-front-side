@@ -23,10 +23,10 @@ function Profile() {
 
 
     useEffect(() => {
-        // fetch('http://127.0.0.1:8080/projects/' + accountId, reqOptions)
-        //     .then(response => response.json())
-        //     .then(json => setProject(json))
-        //     .catch(error => console.error(error));
+        fetch('http://127.0.0.1:8080/accounts/' + accountId, reqOptions)
+            .then(response => response.json())
+            .then(json => setUser(json))
+            .catch(error => console.error(error));
     }, []);
     return (
         <>
@@ -36,39 +36,21 @@ function Profile() {
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={10} className='px-5'>
                     {user ? <>
-                        <h3 className='mb-4'>#{accountId} {user.theme}</h3>
+                        <h3 className='mb-2'>{user.name}</h3>
+                        <div className='fs-5 mb-2 fst-italic'>{user.science_degree}</div>
                         <hr />
                         <div>
-                            <Row className='mb-3'>
-                                <Col md="auto">
-                                    Статус: <Badge pill bg="info" className='mx-2 style-bg'>{user.status}</Badge>
-                                </Col>
-                                <Col md="auto">
-                                    Стадия: <Badge pill bg="info" className='mx-2 style-bg'>{user.stage}</Badge>
+                            <Row className='' >
+                                <Col >
+                                    <div className='fs-3 mb-2 fw-medium'>{user.university}</div>
                                 </Col>
                             </Row>
-                            <Row className='mb-3' xs={1} md={2} lg={2}>
-                                <Col className='mb-3'>
-                                    <div className='fs-3 mb-2 fw-medium'>Студент</div>
-                                    <div className='fs-4 mb-2'>{user.student.surname} {user.student.name} {user.student.middlename}, {user.student.cource} курс</div>
-                                    <div className='fs-5 mb-2'>Образовательная программа: <span className='fst-italic'>{user.student.education_programme}</span></div>
+                            <Row className='mb-3' xs="auto">
+                                <Col >
+                                    <div className='fs-4 mb-2 fw-light'>Свободные места:</div>                                    
                                 </Col>
-                                <Col className='mb-3'>
-                                    <Row>
-                                        <div className='fs-3 mb-2 fw-medium'>Действия</div>
-                                        <div>чипи чипи чапа чапа</div>
-                                        <Row sm={1} lg={1} xl={3}>
-                                            <LinkContainer as={Col} to={"./tasks/add"}>
-                                                <Button className='style-button mb-3'>Назначить задание</Button>
-                                            </LinkContainer>
-                                        </Row>
-                                        <Row sm={1} lg={1} xl={3}>
-                                            {user.cloud_folder_link === "" ?
-                                                <Button variant="outline-warning" className='mb-3' disabled>Проекта нет в облачном хранилище</Button>
-                                                : <Button as="a" href={user.cloud_folder_link} target="_blank" rel="noopener noreferrer" className='style-button mb-3'>Открыть папку проекта</Button>
-                                            }
-                                        </Row>                                       
-                                    </Row>
+                                <Col >
+                                {SpinnerCenter()}                                  
                                 </Col>
                             </Row>
                         </div>
