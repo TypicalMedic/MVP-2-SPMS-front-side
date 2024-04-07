@@ -17,6 +17,8 @@ import Students from "./pages/students";
 import GoogleDrive from "pages/integrations/clouddrive/google";
 import GoogleCalendar from "pages/integrations/planner/google";
 import GitHub from "pages/integrations/gitrepo/github";
+import Profile from "pages/profile";
+import Integrations from "pages/profile/integrations";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "css/style.css"
 
@@ -26,6 +28,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/profile" >
+            <Route path=":accountId/">
+              <Route index element={<Profile />} />
+              <Route path="settings" element={<Home />} />
+              <Route path="integrations" element={<Integrations />} />
+            </Route>
+          </Route>
           <Route path="projects/" >
             <Route index element={<Projects />} />
             <Route path=":projectId/">

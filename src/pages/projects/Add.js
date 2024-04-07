@@ -130,7 +130,7 @@ function AddProject() {
             if (addingStudent) {
                 prepareStudentReqBody()
                 const response = await fetch('http://127.0.0.1:8080/students/add', postReqOptions)
-                if (response.status != 200) {
+                if (response.status !== 200) {
                     const status = response.status;
                     setAddProjectResult(status)
                     return
@@ -186,7 +186,7 @@ function AddProject() {
     function RenderRequestResultModal() {
         let header = "Научное руководство оформлено!";
         let body = "Вы можете просмотреть проект в списке проектов.";
-        if (addProjectResult != 200) {
+        if (addProjectResult !== 200) {
             header = "Произошла ошибка при оформлении научного руководства!";
             body = `Код ошибки: ${addProjectResult}. Обратитесь в службу поддержки, если прблема не устранится.`;
         }
@@ -301,24 +301,24 @@ function AddProject() {
                                             Введите информацию о студенте:
                                         </div>
                                         <Form ref={addStudentRef} id="student-form">
-                                            <Form.Group className="mb-3" controlId="meetName">
+                                            <Form.Group className="mb-3">
                                                 <Form.Label>Имя *</Form.Label>
                                                 <Form.Control name="name" onChange={handleStudentChange} required placeholder="Введите название" />
                                             </Form.Group>
 
-                                            <Form.Group className="mb-3" controlId="meetDesc">
+                                            <Form.Group className="mb-3" >
                                                 <Form.Label>Фамилия *</Form.Label>
                                                 <Form.Control name="surname" onChange={handleStudentChange} required placeholder="Введите описание" />
                                             </Form.Group>
 
-                                            <Form.Group className="mb-3" controlId="meetDesc">
+                                            <Form.Group className="mb-3" >
                                                 <Form.Label>Отчество</Form.Label>
                                                 <Form.Control name="middlename" onChange={handleStudentChange} placeholder="Введите описание" />
                                             </Form.Group>
-                                            <div className="mb-3" controlId="student">
+                                            <div className="mb-3" >
                                                 <label className='mb-2'>Курс *</label>
-                                                <select class="form-select" name="cource" onChange={handleStudentChange} required >
-                                                    <option value="" selected hidden>Выберете курс...</option>
+                                                <select className="form-select" name="cource" onChange={handleStudentChange} required defaultValue="" >
+                                                    <option value=""  hidden>Выберете курс...</option>
                                                     <option value="1" >1</option>
                                                     <option value="2" >2</option>
                                                     <option value="3" >3</option>
@@ -326,11 +326,11 @@ function AddProject() {
                                                     <option value="5" >5</option>
                                                 </select>
                                             </div>
-                                            <div className="mb-3" controlId="student">
+                                            <div className="mb-3">
                                                 <label className='mb-2'>Образовательная программа *</label>
-                                                <select class="form-select" name="education_programme_id" onChange={handleStudentChange} required >
-                                                    <option value="" selected hidden>Выберете программу...</option>
-                                                    {edprogs ? RenderEdProgrammes() : SpinnerCenter()}
+                                                <select className="form-select" name="education_programme_id" onChange={handleStudentChange} required defaultValue="">
+                                                    <option value="" hidden>Выберете программу...</option>
+                                                    {edprogs ? RenderEdProgrammes() : <option>загрузка...</option>}
                                                 </select>
                                             </div>
                                         </Form>
@@ -340,8 +340,8 @@ function AddProject() {
                                             <div className='fs-3'>
                                                 <Form.Group className="mb-3" controlId="student">
                                                     <Form.Label>Выберете студента:</Form.Label>
-                                                    <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" >
-                                                        <option value={-1} selected hidden>Выберете студента...</option>
+                                                    <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" defaultValue={-1} >
+                                                        <option value={-1} hidden>Выберете студента...</option>
                                                         {RenderStudents()}
                                                     </Form.Select>
                                                 </Form.Group>

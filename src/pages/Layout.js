@@ -1,11 +1,13 @@
 import { Outlet, Link } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
+import Cookies from 'universal-cookie';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import Container from 'react-bootstrap/Container';
 
+const cookies = new Cookies();
 const Layout = () => {
     return (
         <>
@@ -37,9 +39,18 @@ const Layout = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <LinkContainer to="/scientificleadership/add">
-                                <Button className="style-button" variant="success">Взять под научное руководство</Button>
-                            </LinkContainer>
+                            <div className="d-flex align-items-center">
+                                <LinkContainer to="/scientificleadership/add">
+                                    <Button className="style-button mx-2" variant="success" size="sm">Взять под научное руководство</Button>
+                                </LinkContainer>
+                            </div>
+                            {cookies.get('professor_id') == undefined ?
+                                <LinkContainer to="/login">
+                                    <Nav.Link>Войти</Nav.Link>
+                                </LinkContainer> :
+                                <LinkContainer to={`/profile/${cookies.get('professor_id')}`}>
+                                    <Nav.Link>Профиль</Nav.Link>
+                                </LinkContainer>}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
