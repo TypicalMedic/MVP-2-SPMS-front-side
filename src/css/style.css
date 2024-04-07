@@ -1,7 +1,10 @@
+.style-img-card {
+  height:20ch;
+  object-fit:cover;
+}
 .style-outline {
   border-color: darkcyan;
 }
-
 .style-bg {
   background-color: darkcyan !important;
 }

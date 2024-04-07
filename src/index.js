@@ -19,6 +19,7 @@ import GoogleCalendar from "pages/integrations/planner/google";
 import GitHub from "pages/integrations/gitrepo/github";
 import Profile from "pages/profile";
 import Integrations from "pages/profile/integrations";
+import Settings from "pages/profile/settings";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "css/style.css"
 
@@ -31,7 +32,7 @@ export default function App() {
           <Route path="/profile" >
             <Route path=":accountId/">
               <Route index element={<Profile />} />
-              <Route path="settings" element={<Home />} />
+              <Route path="settings" element={<Settings />} />
               <Route path="integrations" element={<Integrations />} />
             </Route>
           </Route>

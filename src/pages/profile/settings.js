@@ -1,0 +1,45 @@
+import React, { useState, useEffect } from 'react';
+import Cookies from 'universal-cookie';
+import { useParams } from "react-router-dom";
+import { Col, Row, Badge, Container, Button } from 'react-bootstrap';
+import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import SpinnerCenter from 'pages/shared/Spinner';
+import ProfileSidebar from './ProfileSidebar';
+
+const cookies = new Cookies();
+const reqOptions = {
+    method: "GET",
+    mode: "cors",
+    cache: "default",
+    credentials: 'include',
+    headers: {
+        "Professor-Id": cookies.get('professor_id')
+    }
+};
+
+function Settings() {
+    // const [user, setUser] = useState(null);
+    let { accountId } = useParams();
+
+
+    useEffect(() => {
+        // fetch('http://127.0.0.1:8080/accounts/' + accountId, reqOptions)
+        //     .then(response => response.json())
+        //     .then(json => setUser(json))
+        //     .catch(error => console.error(error));
+    }, []);
+    return (
+        <>
+            <Row className='m-2'>
+                <Col xs={12} sm={12} md={4} lg={2}>
+                    <ProfileSidebar accountId={accountId} />
+                </Col>
+                <Col xs={12} sm={12} md={8} lg={10} className='px-5'>
+                    
+                </Col>
+            </Row>
+        </>
+    );
+};
+
+export default Settings;
