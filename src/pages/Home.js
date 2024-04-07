@@ -7,6 +7,7 @@ const Home = () => {
   const setCookies = () => {
     cookies.set('professor_id', '1', { path: '/' });
   }
+  
   return (<> <Row className='justify-content-center'>
     <Col xs={11} md={10} lg={8}>
       <h1>Главная страница</h1>

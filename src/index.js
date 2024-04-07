@@ -14,6 +14,11 @@ import Tasks from "./pages/projects/tasks";
 import AddTask from "./pages/projects/tasks/Add";
 import Task from "./pages/projects/tasks/task";
 import Students from "./pages/students";
+import GoogleDrive from "pages/integrations/clouddrive/google";
+import GoogleCalendar from "pages/integrations/planner/google";
+import GitHub from "pages/integrations/gitrepo/github";
+import Profile from "pages/profile";
+import Integrations from "pages/profile/integrations";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "css/style.css"
 
@@ -23,6 +28,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/profile" >
+            <Route path=":accountId/">
+              <Route index element={<Profile />} />
+              <Route path="settings" element={<Home />} />
+              <Route path="integrations" element={<Integrations />} />
+            </Route>
+          </Route>
           <Route path="projects/" >
             <Route index element={<Projects />} />
             <Route path=":projectId/">
@@ -42,6 +54,21 @@ export default function App() {
           <Route path="meetings" >
             <Route index element={<Meetings />} />
             <Route path="arrange" element={<ArrangeMeeting />} />
+          </Route>
+          <Route path="scientificleadership/add" element={<AddProject />} />
+          <Route path="integration/" >
+            <Route path="googlecalendar" >
+              <Route index element={<GoogleCalendar />} />
+              <Route path="success" element={<Home />} />
+            </Route>
+            <Route path="googledrive" >
+              <Route index element={<GoogleDrive />} />
+              <Route path="success" element={<Home />} />
+            </Route>
+            <Route path="github" >
+              <Route index element={<GitHub />} />
+              <Route path="success" element={<Home />} />
+            </Route>
           </Route>
           <Route path="scientificleadership/add" element={<AddProject />} />
           <Route path="students/" >
