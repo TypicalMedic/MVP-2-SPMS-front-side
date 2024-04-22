@@ -13,7 +13,7 @@ const getStudentReqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 
@@ -23,7 +23,7 @@ let postMeetingReqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id'),
+        "Session-Id": cookies.get('session_token'),
         "Content-Type": "application/json",
     },
 };

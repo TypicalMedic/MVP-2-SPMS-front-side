@@ -13,7 +13,7 @@ const reqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 
@@ -35,7 +35,7 @@ function Settings() {
                     <ProfileSidebar accountId={accountId} />
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={10} className='px-5'>
-                    
+
                 </Col>
             </Row>
         </>

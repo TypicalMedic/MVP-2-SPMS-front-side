@@ -15,7 +15,7 @@ const reqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 
@@ -25,11 +25,10 @@ const gitHubAuth = "http://127.0.0.1:3000/integration/github";
 
 const Integrations = () => {
     const [integr, setIntegr] = useState(null);
-    let { accountId } = useParams();
 
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8080/accounts/${accountId}/integrations`, reqOptions)
+        fetch(`http://127.0.0.1:8080/account/integrations`, reqOptions)
             .then(response => response.json())
             .then(json => setIntegr(json))
             .catch(error => console.error(error));
@@ -39,7 +38,7 @@ const Integrations = () => {
 
         <Row className='m-2'>
             <Col xs={12} sm={12} md={4} lg={2}>
-                <ProfileSidebar accountId={accountId} />
+                <ProfileSidebar />
             </Col>
             <Col xs={12} sm={12} md={8} lg={10} className='px-5'>
 

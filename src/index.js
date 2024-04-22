@@ -30,11 +30,9 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/profile" >
-            <Route path=":accountId/">
               <Route index element={<Profile />} />
               <Route path="settings" element={<Settings />} />
               <Route path="integrations" element={<Integrations />} />
-            </Route>
           </Route>
           <Route path="projects/" >
             <Route index element={<Projects />} />

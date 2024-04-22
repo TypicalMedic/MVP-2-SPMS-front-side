@@ -48,7 +48,7 @@ const Layout = () => {
                                 <LinkContainer to="/login">
                                     <Nav.Link>Войти</Nav.Link>
                                 </LinkContainer> :
-                                <LinkContainer to={`/profile/${cookies.get('professor_id')}`}>
+                                <LinkContainer to={`/profile`}>
                                     <Nav.Link>Профиль</Nav.Link>
                                 </LinkContainer>}
                         </Nav>
