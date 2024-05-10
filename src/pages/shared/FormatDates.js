@@ -5,7 +5,7 @@ function formatDateTimeValue(num) {
 export function FormatDateTime(dateStr) {
     const utcDate = GetUtcDate(dateStr);
     const day = formatDateTimeValue(utcDate.getDate());
-    const month = formatDateTimeValue(utcDate.getMonth());
+    const month = formatDateTimeValue(utcDate.getMonth()+1);
     const year = utcDate.getFullYear();
     const hours = formatDateTimeValue(utcDate.getHours());
     const minutes = formatDateTimeValue(utcDate.getMinutes());
@@ -15,7 +15,7 @@ export function FormatDateTime(dateStr) {
 export function FormatDate(dateStr) {
     const utcDate = GetUtcDate(dateStr);
     const day = formatDateTimeValue(utcDate.getDate());
-    const month = formatDateTimeValue(utcDate.getMonth());
+    const month = formatDateTimeValue(utcDate.getMonth()+1);
     const year = utcDate.getFullYear();
     return `${day}.${month}.${year}`;
 }

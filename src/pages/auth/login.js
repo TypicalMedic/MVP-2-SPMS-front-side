@@ -68,7 +68,7 @@ function Login() {
                                 <Col xs={12} sm={4}>
                                     <Form onSubmit={handleSubmit} className='mb-3'>
                                         <Form.Group className="mb-3" controlId="login">
-                                            <Form.Label>Электронная почта *</Form.Label>
+                                            <Form.Label>Номер телефона *</Form.Label>
                                             <Form.Control name="username" onChange={handleChange} required placeholder="example.email@gmail.com" />
                                         </Form.Group>
 

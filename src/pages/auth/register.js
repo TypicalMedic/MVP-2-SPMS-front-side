@@ -27,6 +27,7 @@ function Register() {
         if (cookies.get('session_token') !== undefined) {
            history('/', {replace: true});
         }
+        setFormData(values => ({ ...values, ["university_id"]: 1 }))
     }, []);
 
 
@@ -41,7 +42,7 @@ function Register() {
         event.target.reset();
         loginReqOptions["body"] = JSON.stringify(formData)
         try {
-            const response = await fetch(`http://127.0.0.1:8080/auth/signin`, loginReqOptions)
+            const response = await fetch(`http://127.0.0.1:8080/auth/signup`, loginReqOptions)
             const status = response.status;
             console.log("Responce status:", status);
             if (status === 200) {
@@ -68,8 +69,8 @@ function Register() {
                                 <Col xs={12} sm={4}>
                                     <Form onSubmit={handleSubmit} className='mb-3'>
                                         <Form.Group className="mb-3" controlId="login">
-                                            <Form.Label>Электронная почта *</Form.Label>
-                                            <Form.Control name="username" onChange={handleChange} required placeholder="example.email@gmail.com" />
+                                            <Form.Label>Номер телефона *</Form.Label>
+                                            <Form.Control name="username" onChange={handleChange} required placeholder="79991111111" />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="pwd">

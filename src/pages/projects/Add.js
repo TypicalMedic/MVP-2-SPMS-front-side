@@ -48,6 +48,7 @@ function AddProject() {
     const addProjectStep = 3;
 
     const [stepPath, setPath] = useState([methodStudentStep, selectStudentStep, addProjectStep]);
+    const [integr, setIntegr] = useState(null);
 
     const selectRef = useRef(null);
     const addStudentRef = useRef(null);
@@ -69,16 +70,25 @@ function AddProject() {
             "cource": 1,
             "education_programme_id": 1
         });
-        fetch('http://127.0.0.1:8080/students', getReqOptions)
+
+        fetch(`http://127.0.0.1:8080/account/integrations`, getReqOptions)
             .then(response => response.json())
-            .then(json => setStudents(json["students"]))
-            .catch(error => console.error(error));
-        fetch('http://127.0.0.1:8080/universities/1/edprogrammes', getReqOptions)
-            .then(response => response.json())
-            .then(json => setEdprogs(json["programmes"]))
-            .catch(error => console.error(error));
-        resetSelect();
-        renderNavBar();
+            .then(json => {
+                setIntegr(json);
+                if (json.cloud_drive) {
+                    fetch('http://127.0.0.1:8080/students', getReqOptions)
+                        .then(response => response.json())
+                        .then(json => setStudents(json["students"]))
+                        .catch(error => console.error(error));
+                    fetch('http://127.0.0.1:8080/universities/1/edprogrammes', getReqOptions)
+                        .then(response => response.json())
+                        .then(json => setEdprogs(json["programmes"]))
+                        .catch(error => console.error(error));
+                    resetSelect();
+                    renderNavBar();
+                }
+            });
+
     }, []);
 
 
@@ -287,107 +297,117 @@ function AddProject() {
                 <Col xs={11} md={10} lg={8}>
                     <h1 className='mb-4'>Новое научное руководство</h1>
                     <hr />
-                    <div ><Tab.Container id="left-tabs-example" defaultActiveKey="select-student-method">
-                        <Row className='justify-content-center'>
-                            <Col xs={12} sm={8} className='mb-3'>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="select-student-method">
-                                        <div className='fs-3'>
-                                            Выберите студента, которого берете под научное руководство:
-                                        </div>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="add-student">
-                                        <div className='fs-3'>
-                                            Введите информацию о студенте:
-                                        </div>
-                                        <Form ref={addStudentRef} id="student-form">
-                                            <Form.Group className="mb-3">
-                                                <Form.Label>Имя *</Form.Label>
-                                                <Form.Control name="name" onChange={handleStudentChange} required placeholder="Введите название" />
-                                            </Form.Group>
+                    {integr ?
+                        integr.cloud_drive ?
+                            <div ><Tab.Container id="left-tabs-example" defaultActiveKey="select-student-method">
+                                <Row className='justify-content-center'>
+                                    <Col xs={12} sm={8} className='mb-3'>
+                                        <Tab.Content>
+                                            <Tab.Pane eventKey="select-student-method">
+                                                <div className='fs-3'>
+                                                    Выберите студента, которого берете под научное руководство:
+                                                </div>
+                                            </Tab.Pane>
+                                            <Tab.Pane eventKey="add-student">
+                                                <div className='fs-3'>
+                                                    Введите информацию о студенте:
+                                                </div>
+                                                <Form ref={addStudentRef} id="student-form">
+                                                    <Form.Group className="mb-3">
+                                                        <Form.Label>Имя *</Form.Label>
+                                                        <Form.Control name="name" onChange={handleStudentChange} required placeholder="Введите название" />
+                                                    </Form.Group>
 
-                                            <Form.Group className="mb-3" >
-                                                <Form.Label>Фамилия *</Form.Label>
-                                                <Form.Control name="surname" onChange={handleStudentChange} required placeholder="Введите описание" />
-                                            </Form.Group>
+                                                    <Form.Group className="mb-3" >
+                                                        <Form.Label>Фамилия *</Form.Label>
+                                                        <Form.Control name="surname" onChange={handleStudentChange} required placeholder="Введите описание" />
+                                                    </Form.Group>
 
-                                            <Form.Group className="mb-3" >
-                                                <Form.Label>Отчество</Form.Label>
-                                                <Form.Control name="middlename" onChange={handleStudentChange} placeholder="Введите описание" />
-                                            </Form.Group>
-                                            <div className="mb-3" >
-                                                <label className='mb-2'>Курс *</label>
-                                                <select className="form-select" name="cource" onChange={handleStudentChange} required defaultValue="" >
-                                                    <option value=""  hidden>Выберете курс...</option>
-                                                    <option value="1" >1</option>
-                                                    <option value="2" >2</option>
-                                                    <option value="3" >3</option>
-                                                    <option value="4" >4</option>
-                                                    <option value="5" >5</option>
-                                                </select>
-                                            </div>
-                                            <div className="mb-3">
-                                                <label className='mb-2'>Образовательная программа *</label>
-                                                <select className="form-select" name="education_programme_id" onChange={handleStudentChange} required defaultValue="">
-                                                    <option value="" hidden>Выберете программу...</option>
-                                                    {edprogs ? RenderEdProgrammes() : <option>загрузка...</option>}
-                                                </select>
-                                            </div>
-                                        </Form>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="select-student">
-                                        {students ?
-                                            <div className='fs-3'>
-                                                <Form.Group className="mb-3" controlId="student">
-                                                    <Form.Label>Выберете студента:</Form.Label>
-                                                    <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" defaultValue={-1} >
-                                                        <option value={-1} hidden>Выберете студента...</option>
-                                                        {RenderStudents()}
-                                                    </Form.Select>
-                                                </Form.Group>
-                                            </div>
-                                            : SpinnerCenter()}
+                                                    <Form.Group className="mb-3" >
+                                                        <Form.Label>Отчество</Form.Label>
+                                                        <Form.Control name="middlename" onChange={handleStudentChange} placeholder="Введите описание" />
+                                                    </Form.Group>
+                                                    <div className="mb-3" >
+                                                        <label className='mb-2'>Курс *</label>
+                                                        <select className="form-select" name="cource" onChange={handleStudentChange} required defaultValue="" >
+                                                            <option value="" hidden>Выберете курс...</option>
+                                                            <option value="1" >1</option>
+                                                            <option value="2" >2</option>
+                                                            <option value="3" >3</option>
+                                                            <option value="4" >4</option>
+                                                            <option value="5" >5</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="mb-3">
+                                                        <label className='mb-2'>Образовательная программа *</label>
+                                                        <select className="form-select" name="education_programme_id" onChange={handleStudentChange} required defaultValue="">
+                                                            <option value="" hidden>Выберете программу...</option>
+                                                            {edprogs ? RenderEdProgrammes() : <option>загрузка...</option>}
+                                                        </select>
+                                                    </div>
+                                                </Form>
+                                            </Tab.Pane>
+                                            <Tab.Pane eventKey="select-student">
+                                                {students ?
+                                                    <div className='fs-3'>
+                                                        <Form.Group className="mb-3" controlId="student">
+                                                            <Form.Label>Выберете студента:</Form.Label>
+                                                            <Form.Select ref={selectRef} name="student_id" onChange={handleSelectChange} required aria-label="select student" defaultValue={-1} >
+                                                                <option value={-1} hidden>Выберете студента...</option>
+                                                                {RenderStudents()}
+                                                            </Form.Select>
+                                                        </Form.Group>
+                                                    </div>
+                                                    : SpinnerCenter()}
 
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="add-project">
-                                        <div className='fs-3'>
-                                            Введите информацию о проекте:
-                                            <Form id="project-form" onSubmit={handleSubmit}>
-                                                <Form.Group className="mb-3" controlId="meetName">
-                                                    <Form.Label>Тема работы *</Form.Label>
-                                                    <Form.Control name="theme" onChange={handleChange} required placeholder="Введите тему" />
-                                                </Form.Group>
+                                            </Tab.Pane>
+                                            <Tab.Pane eventKey="add-project">
+                                                <div className='fs-3'>
+                                                    Введите информацию о проекте:
+                                                    <Form id="project-form" onSubmit={handleSubmit}>
+                                                        <Form.Group className="mb-3" controlId="meetName">
+                                                            <Form.Label>Тема работы *</Form.Label>
+                                                            <Form.Control name="theme" onChange={handleChange} required placeholder="Введите тему" />
+                                                        </Form.Group>
 
-                                                <Form.Group className="mb-3" controlId="meetName">
-                                                    <Form.Label>Год выполнения *</Form.Label>
-                                                    <Form.Control type='number' name="year" onChange={handleChange} required placeholder="Введите год" />
-                                                </Form.Group>
+                                                        <Form.Group className="mb-3" controlId="meetName">
+                                                            <Form.Label>Год выполнения *</Form.Label>
+                                                            <Form.Control type='number' name="year" onChange={handleChange} required placeholder="Введите год" />
+                                                        </Form.Group>
 
-                                                <Form.Group className="mb-3" controlId="meetName">
-                                                    <Form.Label>Логин обладателя репозитория *</Form.Label>
-                                                    <Form.Control name="repository_owner_login" onChange={handleChange} required placeholder="Введите логин" />
-                                                </Form.Group>
+                                                        <Form.Group className="mb-3" controlId="meetName">
+                                                            <Form.Label>Логин обладателя репозитория *</Form.Label>
+                                                            <Form.Control name="repository_owner_login" onChange={handleChange} required placeholder="Введите логин" />
+                                                        </Form.Group>
 
-                                                <Form.Group className="mb-3" controlId="meetName">
-                                                    <Form.Label>Имя репозитория *</Form.Label>
-                                                    <Form.Control name="repository_name" onChange={handleChange} required placeholder="Введите название" />
-                                                </Form.Group>
-                                                <Row className='justify-content-center mx-1'>
-                                                    <Button type="submit" className="style-button mb-3">
-                                                        Взять под научное руководство
-                                                    </Button>
-                                                </Row>
-                                            </Form>
-                                        </div>
-                                    </Tab.Pane>
-                                </Tab.Content>
-                            </Col>
-                            <Col xs={12} sm={8}>
-                                {navbar}
-                            </Col>
-                        </Row>
-                    </Tab.Container>
-                    </div>
+                                                        <Form.Group className="mb-3" controlId="meetName">
+                                                            <Form.Label>Имя репозитория *</Form.Label>
+                                                            <Form.Control name="repository_name" onChange={handleChange} required placeholder="Введите название" />
+                                                        </Form.Group>
+                                                        <Row className='justify-content-center mx-1'>
+                                                            <Button type="submit" className="style-button mb-3">
+                                                                Взять под научное руководство
+                                                            </Button>
+                                                        </Row>
+                                                    </Form>
+                                                </div>
+                                            </Tab.Pane>
+                                        </Tab.Content>
+                                    </Col>
+                                    <Col xs={12} sm={8}>
+                                        {navbar}
+                                    </Col>
+                                </Row>
+                            </Tab.Container>
+                            </div>
+                            :
+                            <>
+                                <h3>Вы еще не подключили облачное хранилище, это можно сделать <a href='/profile/integrations'>здесь</a></h3>
+                            </>
+                        : SpinnerCenter()}
+
+
+
                 </Col>
             </Row>
 

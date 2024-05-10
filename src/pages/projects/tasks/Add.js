@@ -9,6 +9,16 @@ import ProjectSidebar from '../ProjectSidebar';
 
 const cookies = new Cookies();
 
+const getReqOptions = {
+    method: "GET",
+    mode: "cors",
+    cache: "default",
+    credentials: 'include',
+    headers: {
+        "Session-Id": cookies.get('session_token')
+    }
+};
+
 let postMeetingReqOptions = {
     method: "POST",
     mode: "cors",
@@ -26,6 +36,7 @@ function AddTask() {
     const [addTaskResult, setAddMeetingResult] = useState(null);
 
     let { projectId } = useParams();
+    const [integr, setIntegr] = useState(null);
 
     useEffect(() => {
         // setting task defaults
@@ -34,6 +45,11 @@ function AddTask() {
             "description": "",
             "deadline": ""
         });
+        fetch(`http://127.0.0.1:8080/account/integrations`, getReqOptions)
+            .then(response => response.json())
+            .then(json => {
+                setIntegr(json);
+            });
     }, []);
 
 
@@ -103,37 +119,46 @@ function AddTask() {
                         <h3 className='mb-4'>Назначить задание</h3>
                         <hr />
                         <div >
-                            <Row className='justify-content-start'>
-                                <Col xs={12} sm={8}>
-                                    <Form onSubmit={handleSubmit}>
-                                        <Form.Group className="mb-3" controlId="meetName">
-                                            <Form.Label>Название *</Form.Label>
-                                            <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
-                                            <Form.Text className="text-muted">
-                                                Будьте кратки в названии
-                                            </Form.Text>
-                                        </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="meetDesc">
-                                            <Form.Label>Описание</Form.Label>
-                                            <Form.Control as="textarea" rows={5} name="description" onChange={handleChange} placeholder="Введите описание" />
-                                        </Form.Group>
+                            {integr ?
+                                integr.cloud_drive ?
+                                    <Row className='justify-content-start'>
+                                        <Col xs={12} sm={8}>
+                                            <Form onSubmit={handleSubmit}>
+                                                <Form.Group className="mb-3" controlId="meetName">
+                                                    <Form.Label>Название *</Form.Label>
+                                                    <Form.Control name="name" onChange={handleChange} required placeholder="Введите название" />
+                                                    <Form.Text className="text-muted">
+                                                        Будьте кратки в названии
+                                                    </Form.Text>
+                                                </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="meetTime">
-                                            <Form.Label>Деделайн *</Form.Label>
-                                            <Form.Control name="deadline" onChange={handleChange} required type="datetime-local"
-                                                placeholder="Введите время встречи"
-                                                id="meeting-time"
-                                                min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
-                                            />
-                                        </Form.Group>
+                                                <Form.Group className="mb-3" controlId="meetDesc">
+                                                    <Form.Label>Описание</Form.Label>
+                                                    <Form.Control as="textarea" rows={5} name="description" onChange={handleChange} placeholder="Введите описание" />
+                                                </Form.Group>
 
-                                        <Button type="submit" className="style-button">
-                                            Назначить
-                                        </Button>
-                                    </Form>
-                                </Col>
-                            </Row>
+                                                <Form.Group className="mb-3" controlId="meetTime">
+                                                    <Form.Label>Деделайн *</Form.Label>
+                                                    <Form.Control name="deadline" onChange={handleChange} required type="datetime-local"
+                                                        placeholder="Введите время встречи"
+                                                        id="meeting-time"
+                                                        min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
+                                                    />
+                                                </Form.Group>
+
+                                                <Button type="submit" className="style-button">
+                                                    Назначить
+                                                </Button>
+                                            </Form>
+                                        </Col>
+                                    </Row>
+                                    :
+                                    <>
+                                        <h3>Вы еще не подключили облачное хранилище, это можно сделать <a href='/profile/integrations'>здесь</a></h3>
+                                    </>
+                                : SpinnerCenter()}
+
                         </div>
                     </Row>
                 </Col>
