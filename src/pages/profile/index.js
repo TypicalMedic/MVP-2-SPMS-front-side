@@ -13,17 +13,16 @@ const reqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 
 function Profile() {
     const [user, setUser] = useState(null);
-    let { accountId } = useParams();
 
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/accounts/' + accountId, reqOptions)
+        fetch('http://127.0.0.1:8080/account', reqOptions)
             .then(response => response.json())
             .then(json => setUser(json))
             .catch(error => console.error(error));
@@ -32,7 +31,7 @@ function Profile() {
         <>
             <Row className='m-2'>
                 <Col xs={12} sm={12} md={4} lg={2}>
-                    <ProfileSidebar accountId={accountId} />
+                    <ProfileSidebar/>
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={10} className='px-5'>
                     {user ? <>

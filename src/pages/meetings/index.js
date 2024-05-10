@@ -4,7 +4,7 @@ import { Container, Row, Card, Badge, Button, Col, Alert, Spinner } from 'react-
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from 'react-router-dom';
 import SpinnerCenter from 'pages/shared/Spinner';
-import {FormatDate, FormatDateTime}from 'pages/shared/FormatDates';
+import { FormatDate, FormatDateTime } from 'pages/shared/FormatDates';
 
 const cookies = new Cookies();
 
@@ -14,23 +14,36 @@ const reqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 
 function Meetings() {
     const [meetings, setMeetings] = useState(null);
     const [meetingFromTime, setMeetingFromTime] = useState(new Date())
+    const [integr, setIntegr] = useState(null);
+
 
     useEffect(() => {
-        const currentTime = new Date(Date.now());
-        fetch('http://127.0.0.1:8080/meetings?' + new URLSearchParams({
-            from: currentTime.toISOString(),
-        }), reqOptions)
+        fetch(`http://127.0.0.1:8080/account/integrations`, reqOptions)
             .then(response => response.json())
-            .then(json => setMeetings(json["meetings"]))
+            .then(json => {
+                setIntegr(json);
+                if (json.planner) {
+                    const currentTime = new Date(Date.now());
+                    fetch('http://127.0.0.1:8080/meetings?' + new URLSearchParams({
+                        from: currentTime.toISOString(),
+                    }), reqOptions)
+                        .then(response => response.json())
+                        .then(json => setMeetings(json["meetings"]))
+                        .catch(error => console.error(error));
+                    setMeetingFromTime(currentTime)
+                    return
+                }
+            })
             .catch(error => console.error(error));
-        setMeetingFromTime(currentTime)
+
+
     }, []);
 
     function ParseMeetings() {
@@ -81,7 +94,15 @@ function Meetings() {
                     <h1 className='mb-4'>Встречи с {FormatDate(meetingFromTime.toISOString())}</h1>
                     <hr />
                     <div >
-                        {meetings ? ParseMeetings() : SpinnerCenter()}
+                        {integr ?
+                            integr.planner ?
+                                meetings ? ParseMeetings() : SpinnerCenter() :
+                                <>
+                                    <h3>Вы еще не подключили планировщик, это можно сделать <a href='/profile/integrations'>здесь</a></h3>
+                                </> :
+                            SpinnerCenter()
+                        }
+
                     </div>
                 </Col>
             </Row>

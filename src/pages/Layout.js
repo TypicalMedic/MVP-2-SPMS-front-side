@@ -44,13 +44,18 @@ const Layout = () => {
                                     <Button className="style-button mx-2" variant="success" size="sm">Взять под научное руководство</Button>
                                 </LinkContainer>
                             </div>
-                            {cookies.get('professor_id') == undefined ?
+                            {cookies.get('session_token') == undefined ?
                                 <LinkContainer to="/login">
                                     <Nav.Link>Войти</Nav.Link>
                                 </LinkContainer> :
-                                <LinkContainer to={`/profile/${cookies.get('professor_id')}`}>
-                                    <Nav.Link>Профиль</Nav.Link>
-                                </LinkContainer>}
+                                <>
+                                    <LinkContainer to={`/profile`}>
+                                        <Nav.Link>Профиль</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to={`/logout`}>
+                                        <Nav.Link>Выйти</Nav.Link>
+                                    </LinkContainer>
+                                </>}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

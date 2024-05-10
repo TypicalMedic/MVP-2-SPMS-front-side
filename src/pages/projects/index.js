@@ -13,7 +13,7 @@ const reqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 
@@ -32,25 +32,31 @@ function Projects() {
                 <Col xs={11} md={10} lg={8}>
                     <h1>Projects</h1>
                     <div>
-                        {projects ? projects.map((project) =>
-                            <Card className="mb-4 style-outline">
-                                <Card.Header>#{project.id} <Badge pill className='style-bg'>{project.status}</Badge> <Badge pill className='style-bg'>{project.stage}</Badge></Card.Header>
-                                <Card.Body>
-                                    <Card.Title className='mb-4'>
-                                        <LinkContainer to={"./" + project.id}>
-                                            <Link className="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-50-hover">{project.theme}</Link>
-                                        </LinkContainer>
-                                    </Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted">
-                                        {project.year}
-                                    </Card.Subtitle>
-                                    <Card.Text>
-                                        {project.student_name}, {project.cource} курс
-                                    </Card.Text>
-                                    {/* <Button variant="outline-light" >Подробнее...</Button> */}
-                                </Card.Body>
-                            </Card>
-                        ) : SpinnerCenter()}
+                        {projects ?
+                            projects.length !== 0 ?
+                                projects.map((project) =>
+                                    <Card className="mb-4 style-outline">
+                                        <Card.Header>#{project.id} <Badge pill className='style-bg'>{project.status}</Badge> <Badge pill className='style-bg'>{project.stage}</Badge></Card.Header>
+                                        <Card.Body>
+                                            <Card.Title className='mb-4'>
+                                                <LinkContainer to={"./" + project.id}>
+                                                    <Link className="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-50-hover">{project.theme}</Link>
+                                                </LinkContainer>
+                                            </Card.Title>
+                                            <Card.Subtitle className="mb-2 text-muted">
+                                                {project.year}
+                                            </Card.Subtitle>
+                                            <Card.Text>
+                                                {project.student_name}, {project.cource} курс
+                                            </Card.Text>
+                                            {/* <Button variant="outline-light" >Подробнее...</Button> */}
+                                        </Card.Body>
+                                    </Card>
+                                ) : <Col>
+                                    Проектов нет!
+                                </Col>
+                            : SpinnerCenter()
+                        }
                     </div>
                 </Col>
             </Row>

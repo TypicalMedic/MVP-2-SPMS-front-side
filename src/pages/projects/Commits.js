@@ -15,7 +15,7 @@ const reqOptions = {
     cache: "default",
     credentials: 'include',
     headers: {
-        "Professor-Id": cookies.get('professor_id')
+        "Session-Id": cookies.get('session_token')
     }
 };
 

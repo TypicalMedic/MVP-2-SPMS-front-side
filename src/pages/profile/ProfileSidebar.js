@@ -10,13 +10,13 @@ function ProfileSidebar(props) {
   return (
     <>
       <Row className="bg-body-tertiary d-grid gap-2 mb-4">
-        <LinkContainer to={`/profile/${props.accountId}`}>
+        <LinkContainer to={`/profile`}>
           <Button className='style-button-outline'>Информация</Button>
         </LinkContainer>
-        <LinkContainer to={`/profile/${props.accountId}/settings`}>
+        <LinkContainer to={`/profile/settings`}>
           <Button className='style-button-outline'>Настройки</Button>
         </LinkContainer>
-        <LinkContainer to={`/profile/${props.accountId}/integrations`}>
+        <LinkContainer to={`/profile/integrations`}>
           <Button className='style-button-outline'>Интеграции</Button>
         </LinkContainer>
       </Row>
