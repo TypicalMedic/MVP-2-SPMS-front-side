@@ -141,7 +141,6 @@ function AddTask() {
                                                 <Form.Group className="mb-3" controlId="meetTime">
                                                     <Form.Label>Деделайн *</Form.Label>
                                                     <Form.Control name="deadline" onChange={handleChange} required type="datetime-local"
-                                                        placeholder="Введите время встречи"
                                                         id="meeting-time"
                                                         min={new Date(Date.now()).toISOString().split(":")[0] + ":" + new Date(Date.now()).toISOString().split(":")[1]}
                                                     />

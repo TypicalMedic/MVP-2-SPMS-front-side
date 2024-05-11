@@ -81,7 +81,7 @@ const Integrations = () => {
                                                             Финальная настройка: выберите календарь, куда будут добавляться встречи:
                                                         </Card.Text>
                                                         <Card.Text className="text-muted">
-                                                            <Button as="a" href="" className='style-button-outline mb-3'>Установить календарь</Button>
+                                                            <Button as="a" href="/integration/setplanner" className='style-button-outline mb-3'>Установить календарь</Button>
                                                         </Card.Text>
                                                     </>}
                                             </> :
@@ -121,18 +121,15 @@ const Integrations = () => {
                                                 {integr.cloud_drive.base_folder_name ?
                                                     <>
                                                         <Card.Text>
-                                                            Корневая папка для проектов и заданий:
+                                                            Корневая папка для проектов и заданий (находится в корне вашего хранилища):
                                                         </Card.Text>
                                                         <Card.Text className="text-muted">
                                                             {integr.cloud_drive.base_folder_name}
                                                         </Card.Text>
                                                     </>
                                                     : <>
-                                                        <Card.Text>
-                                                            Финальная настройка: выберите папку, куда будут добавляться проекты:
-                                                        </Card.Text>
-                                                        <Card.Text className="text-muted">
-                                                            <Button as="a" href="" className='style-button-outline mb-3'>Установить папку для проектов</Button>
+                                                        <Card.Text className='text-danger'>
+                                                            Корневая папка для проектов не найдена! Обратитесь в службу поддержки!
                                                         </Card.Text>
                                                     </>}
                                             </> :

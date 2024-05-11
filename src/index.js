@@ -26,6 +26,7 @@ import Register from "pages/auth/register";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AuthGuard from "pages/auth/authguard";
 import "css/style.css"
+import SetCalendar from "pages/integrations/planner/setCalendar";
 
 export default function App() {
   return (
@@ -33,52 +34,53 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/login"  element={<Login />}/>
-          <Route path="/register"  element={<Register />}/>
-          <Route path="/logout"  element={<Logout />}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/profile" >
-              <Route index element={<AuthGuard Component={<Profile />} />}/>
-              <Route path="settings" element={<AuthGuard Component={<Settings />}/>} />
-              <Route path="integrations" element={<AuthGuard Component={<Integrations />} />}/>
+            <Route index element={<AuthGuard Component={<Profile />} />} />
+            <Route path="settings" element={<AuthGuard Component={<Settings />} />} />
+            <Route path="integrations" element={<AuthGuard Component={<Integrations />} />} />
           </Route>
           <Route path="projects/" >
-            <Route index element={<AuthGuard Component={<Projects />} />}/>
+            <Route index element={<AuthGuard Component={<Projects />} />} />
             <Route path=":projectId/">
-              <Route index element={<AuthGuard Component={<Project />} />}/>
-              <Route path="commits" element={<AuthGuard Component={<Commits />} />}/>
-              <Route path="stats" element={<AuthGuard Component={<ProjectStats />} />}/>
+              <Route index element={<AuthGuard Component={<Project />} />} />
+              <Route path="commits" element={<AuthGuard Component={<Commits />} />} />
+              <Route path="stats" element={<AuthGuard Component={<ProjectStats />} />} />
               <Route path="tasks" >
-                <Route index element={<AuthGuard Component={<Tasks />} />}/>
+                <Route index element={<AuthGuard Component={<Tasks />} />} />
                 <Route path=":taskId/">
-                  <Route index element={<AuthGuard Component={<Task />} />}/>
+                  <Route index element={<AuthGuard Component={<Task />} />} />
                 </Route>
-                <Route path="add" element={<AuthGuard Component={<AddTask />} />}/>
+                <Route path="add" element={<AuthGuard Component={<AddTask />} />} />
               </Route>
             </Route>
             <Route path="add" element={<Home />} />
           </Route>
           <Route path="meetings" >
-            <Route index element={<AuthGuard Component={<Meetings />} />}/>
-            <Route path="arrange" element={<AuthGuard Component={<ArrangeMeeting />} />}/>
+            <Route index element={<AuthGuard Component={<Meetings />} />} />
+            <Route path="arrange" element={<AuthGuard Component={<ArrangeMeeting />} />} />
           </Route>
-          <Route path="scientificleadership/add" element={<AuthGuard Component={<AddProject />} />}/>
+          <Route path="scientificleadership/add" element={<AuthGuard Component={<AddProject />} />} />
           <Route path="integration/" >
+            <Route path="setplanner" element={<SetCalendar />} />
             <Route path="googlecalendar" >
-              <Route index element={<AuthGuard Component={<GoogleCalendar />} />}/>
+              <Route index element={<AuthGuard Component={<GoogleCalendar />} />} />
               <Route path="success" element={<Home />} />
             </Route>
             <Route path="googledrive" >
-              <Route index element={<AuthGuard Component={<GoogleDrive />} />}/>
+              <Route index element={<AuthGuard Component={<GoogleDrive />} />} />
               <Route path="success" element={<Home />} />
             </Route>
             <Route path="github" >
-              <Route index element={<AuthGuard Component={<GitHub />} />}/>
+              <Route index element={<AuthGuard Component={<GitHub />} />} />
               <Route path="success" element={<Home />} />
             </Route>
           </Route>
-          <Route path="scientificleadership/add" element={<AuthGuard Component={<AddProject />} />}/>
+          <Route path="scientificleadership/add" element={<AuthGuard Component={<AddProject />} />} />
           <Route path="students/" >
-            <Route index element={<AuthGuard Component={<Students />} />}/>
+            <Route index element={<AuthGuard Component={<Students />} />} />
             <Route path="add" element={<Home />} />
           </Route>
           <Route path="*" element={<NoPage />} />
