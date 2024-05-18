@@ -19,8 +19,8 @@ const AuthGuard = (props) => {
     fetch("http://127.0.0.1:8080/pingauth", reqOptions).then(response => {
         if (response.status === 401) {
             if (cookies.get('session_token') !== undefined) {
-                cookies.remove('session_token');
-                auth = (cookies.get('session_token') !== undefined) ? true : null;
+                cookies.remove('session_token', { "path": "/" });
+                // auth = (cookies.get('session_token') !== undefined) ? true : null;
                 window.location.reload();
             }
         }

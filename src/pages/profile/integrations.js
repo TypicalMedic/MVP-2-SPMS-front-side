@@ -19,9 +19,9 @@ const reqOptions = {
     }
 };
 
-const googleCalendarAuth = "http://127.0.0.1:3000/integration/googlecalendar";
-const googleDriveAuth = "http://127.0.0.1:3000/integration/googledrive";
-const gitHubAuth = "http://127.0.0.1:3000/integration/github";
+const googleCalendarAuth = "http://localhost:3000/integration/googlecalendar";
+const googleDriveAuth = "http://localhost:3000/integration/googledrive";
+const gitHubAuth = "http://localhost:3000/integration/github";
 
 const Integrations = () => {
     const [integr, setIntegr] = useState(null);
