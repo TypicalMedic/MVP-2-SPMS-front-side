@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Col, Row, Badge, Container, Button } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import SpinnerCenter from 'pages/shared/Spinner';
+import StatusSelect from 'pages/shared/status/StatusSelect';
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -17,15 +18,52 @@ const reqOptions = {
     }
 };
 
+let reqOptionsPut = {
+    method: "PUT",
+    mode: "cors",
+    cache: "default",
+    credentials: 'include',
+    headers: {
+        "Session-Id": cookies.get('session_token'),
+        "Content-Type": "application/json",
+    }
+};
+
 function Project() {
     const [project, setProject] = useState(null);
+    const [projectsStatuses, setProjectsStatuses] = useState(null);
+    const [projectsStages, setProjectsStages] = useState(null);
     let { projectId } = useParams();
 
+
+    function UpdateStatus(event, status) {
+        reqOptionsPut.body = JSON.stringify({
+            "status": parseInt(status)
+        });
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/${projectId}`, reqOptionsPut)
+            .catch(error => console.error(error));
+    }
+
+    function UpdateStage(event, stage) {
+        reqOptionsPut.body = JSON.stringify({
+            "stage": parseInt(stage)
+        });
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/${projectId}`, reqOptionsPut)
+            .catch(error => console.error(error));
+    }
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/` + projectId, reqOptions)
             .then(response => response.json())
             .then(json => setProject(json))
+            .catch(error => console.error(error));
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/statuslist`, reqOptions)
+            .then(response => response.json())
+            .then(json => setProjectsStatuses(json["statuses"]))
+            .catch(error => console.error(error));
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/stagelist`, reqOptions)
+            .then(response => response.json())
+            .then(json => setProjectsStages(json["stages"]))
             .catch(error => console.error(error));
     }, []);
     return (
@@ -41,10 +79,10 @@ function Project() {
                         <div>
                             <Row className='mb-3'>
                                 <Col md="auto">
-                                    Статус: <Badge pill bg="info" className='mx-2 style-bg'>{project.status}</Badge>
+                                    Статус: <StatusSelect func={UpdateStatus} items={projectsStatuses} status={project.status} />
                                 </Col>
                                 <Col md="auto">
-                                    Стадия: <Badge pill bg="info" className='mx-2 style-bg'>{project.stage}</Badge>
+                                    Стадия: <StatusSelect func={UpdateStage} items={projectsStages} status={project.stage} />
                                 </Col>
                             </Row>
                             <Row className='mb-3' xs={1} md={2} lg={2}>
@@ -67,7 +105,7 @@ function Project() {
                                                 <Button variant="outline-warning" className='mb-3' disabled>Проекта нет в облачном хранилище</Button>
                                                 : <Button as="a" href={project.cloud_folder_link} target="_blank" rel="noopener noreferrer" className='style-button mb-3'>Открыть папку проекта</Button>
                                             }
-                                        </Row>                                       
+                                        </Row>
                                     </Row>
                                 </Col>
                             </Row>

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 import { useParams } from "react-router-dom";
 import { FormatDateTime } from 'pages/shared/FormatDates';
+import StatusSelect from 'pages/shared/status/StatusSelect';
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -20,18 +21,42 @@ const reqOptions = {
   }
 };
 
+let reqOptionsPut = {
+  method: "PUT",
+  mode: "cors",
+  cache: "default",
+  credentials: 'include',
+  headers: {
+      "Session-Id": cookies.get('session_token'),
+      "Content-Type": "application/json",
+  }
+};
+
 function Tasks() {
   const [tasks, setTasks] = useState(null);
+  const [tasksStatuses, setTasksStatuses] = useState(null);
   let { projectId } = useParams();
 
   useEffect(() => {
     const currentTime = new Date(Date.now());
     currentTime.setDate(currentTime.getDate() - 30)
-    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/` + projectId + "/tasks", reqOptions)
+    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/${projectId}/tasks`, reqOptions)
       .then(response => response.json())
       .then(json => setTasks(json["tasks"]))
       .catch(error => console.error(error));
+    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/tasks/statuslist`, reqOptions)
+      .then(response => response.json())
+      .then(json => setTasksStatuses(json["statuses"]))
+      .catch(error => console.error(error));
   }, []);
+
+  function UpdateStatus(event, status, taskId) {
+    reqOptionsPut.body = JSON.stringify({
+      "status": parseInt(status)
+    });
+    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/${projectId}/tasks/${taskId}`, reqOptionsPut)
+      .catch(error => console.error(error));
+  }
 
   function renderTasks() {
     if (tasks.length === 0) {
@@ -46,7 +71,7 @@ function Tasks() {
         tasks.map((task) =>
           <Col>
             <Card className="mb-4 style-outline">
-              <Card.Header>#{task.id} <Badge pill bg="info" className='style-bg'>{task.status}</Badge></Card.Header>
+              <Card.Header>#{task.id} <StatusSelect id={task.id} func={UpdateStatus} items={tasksStatuses} selectClass="style-select-in-badge-sm" status={task.status} /></Card.Header>
               <Card.Body>
                 <Card.Title className='mb-3'>
                   <LinkContainer to={"./" + task.id}>
