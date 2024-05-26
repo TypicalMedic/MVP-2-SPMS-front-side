@@ -165,3 +165,10 @@
 .style-option-in-badge {
   background-color:darkslategrey;
 }
+
+.style-vert-line {
+  border-left: 1px solid #ccc;
+  height: auto;
+  margin-left: 1ch;
+  margin-right: 1ch;
+}

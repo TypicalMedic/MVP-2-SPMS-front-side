@@ -22,7 +22,10 @@ const Layout = () => {
                             <LinkContainer to="/">
                                 <Nav.Link>Главная</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/projects">
+                            <LinkContainer to={{
+                                pathname: "/projects",
+                                search: "?filter=InProgress",
+                                }} >
                                 <Nav.Link>Проекты</Nav.Link>
                             </LinkContainer>
                             <NavDropdown title="Встречи" id="basic-nav-dropdown">
