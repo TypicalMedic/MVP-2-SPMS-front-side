@@ -23,7 +23,7 @@ function Settings() {
 
 
     useEffect(() => {
-        // fetch('http://127.0.0.1:8080/accounts/' + accountId, reqOptions)
+        // fetch('https://spams-site.ru/api/v1/accounts/' + accountId, reqOptions)
         //     .then(response => response.json())
         //     .then(json => setUser(json))
         //     .catch(error => console.error(error));

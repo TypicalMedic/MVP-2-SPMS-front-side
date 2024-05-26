@@ -25,13 +25,13 @@ function Meetings() {
 
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8080/account/integrations`, reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/account/integrations`, reqOptions)
             .then(response => response.json())
             .then(json => {
                 setIntegr(json);
                 if (json.planner) {
                     const currentTime = new Date(Date.now());
-                    fetch('http://127.0.0.1:8080/meetings?' + new URLSearchParams({
+                    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/meetings?` + new URLSearchParams({
                         from: currentTime.toISOString(),
                     }), reqOptions)
                         .then(response => response.json())

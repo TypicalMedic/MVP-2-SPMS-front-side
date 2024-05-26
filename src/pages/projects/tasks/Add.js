@@ -45,7 +45,7 @@ function AddTask() {
             "description": "",
             "deadline": ""
         });
-        fetch(`http://127.0.0.1:8080/account/integrations`, getReqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/account/integrations`, getReqOptions)
             .then(response => response.json())
             .then(json => {
                 setIntegr(json);
@@ -65,7 +65,7 @@ function AddTask() {
         prepareReqBody();
         OpenRequestResultModal()
         try {
-            const response = await fetch(`http://127.0.0.1:8080/projects/${projectId}/tasks/add`, postMeetingReqOptions)
+            const response = await fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/${projectId}/tasks/add`, postMeetingReqOptions)
             const status = response.status;
             console.log("Responce status:", status);
             setAddMeetingResult(status)

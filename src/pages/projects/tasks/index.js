@@ -27,7 +27,7 @@ function Tasks() {
   useEffect(() => {
     const currentTime = new Date(Date.now());
     currentTime.setDate(currentTime.getDate() - 30)
-    fetch('http://127.0.0.1:8080/projects/' + projectId + "/tasks", reqOptions)
+    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/` + projectId + "/tasks", reqOptions)
       .then(response => response.json())
       .then(json => setTasks(json["tasks"]))
       .catch(error => console.error(error));

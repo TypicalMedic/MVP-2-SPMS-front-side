@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 const cookies = new Cookies();
 
-const getPlanners = "http://127.0.0.1:8080/auth/integration/getplanners";
-const setPlannersLink = "http://127.0.0.1:8080/auth/integration/setplanner";
+const getPlanners = `${process.env.REACT_APP_SERVER_ADDR}/api/v1/auth/integration/getplanners`;
+const setPlannersLink = `${process.env.REACT_APP_SERVER_ADDR}/api/v1/auth/integration/setplanner`;
 
 const reqGetOptions = {
     method: "GET",

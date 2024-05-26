@@ -17,7 +17,7 @@ function Students() {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/students', reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/students`, reqOptions)
             .then(response => response.json())
             .then(json => setData(json))
             .catch(error => console.error(error));

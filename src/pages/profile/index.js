@@ -22,7 +22,7 @@ function Profile() {
 
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/account', reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/account`, reqOptions)
             .then(response => response.json())
             .then(json => setUser(json))
             .catch(error => console.error(error));

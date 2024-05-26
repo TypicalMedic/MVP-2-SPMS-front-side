@@ -21,7 +21,7 @@ function Projects() {
     const [projects, setProjects] = useState(null);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/projects', reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects`, reqOptions)
             .then(response => response.json())
             .then(json => setProjects(json["projects"]))
             .catch(error => console.error(error));

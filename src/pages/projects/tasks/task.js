@@ -22,7 +22,7 @@ function Task() {
 
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/projects/' + projectId + '/tasks/' + taskId, reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/` + projectId + '/tasks/' + taskId, reqOptions)
             .then(response => response.json())
             .then(json => setTask(json))
             .catch(error => console.error(error));

@@ -71,16 +71,16 @@ function AddProject() {
             "education_programme_id": 1
         });
 
-        fetch(`http://127.0.0.1:8080/account/integrations`, getReqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/account/integrations`, getReqOptions)
             .then(response => response.json())
             .then(json => {
                 setIntegr(json);
                 if (json.cloud_drive) {
-                    fetch('http://127.0.0.1:8080/students', getReqOptions)
+                    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/students`, getReqOptions)
                         .then(response => response.json())
                         .then(json => setStudents(json["students"]))
                         .catch(error => console.error(error));
-                    fetch('http://127.0.0.1:8080/universities/1/edprogrammes', getReqOptions)
+                    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/universities/1/edprogrammes`, getReqOptions)
                         .then(response => response.json())
                         .then(json => setEdprogs(json["programmes"]))
                         .catch(error => console.error(error));
@@ -139,7 +139,7 @@ function AddProject() {
         try {
             if (addingStudent) {
                 prepareStudentReqBody()
-                const response = await fetch('http://127.0.0.1:8080/students/add', postReqOptions)
+                const response = await fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/students/add`, postReqOptions)
                 if (response.status !== 200) {
                     const status = response.status;
                     setAddProjectResult(status)
@@ -149,7 +149,7 @@ function AddProject() {
                 formData["student_id"] = data["student_id"];
             }
             prepareProjectReqBody();
-            const response = await fetch('http://127.0.0.1:8080/projects/add', postReqOptions)
+            const response = await fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/add`, postReqOptions)
             const status = response.status;
             console.log("Responce status:", status);
             setAddProjectResult(status)

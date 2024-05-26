@@ -7,8 +7,8 @@ import SpinnerCenter from 'pages/shared/Spinner';
 
 const cookies = new Cookies();
 
-const googleCalendarAuth = "http://127.0.0.1:8080/auth/integration/authlink/github";
-const returnURL = "http://localhost:3000/";
+const googleCalendarAuth = `${process.env.REACT_APP_SERVER_ADDR}/api/v1/auth/integration/authlink/github`;
+const returnURL = `${process.env.REACT_APP_ADDR}/`;
 
 const reqOptions = {
     method: "GET",

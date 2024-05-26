@@ -23,7 +23,7 @@ function Project() {
 
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/projects/' + projectId, reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/` + projectId, reqOptions)
             .then(response => response.json())
             .then(json => setProject(json))
             .catch(error => console.error(error));

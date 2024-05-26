@@ -50,12 +50,12 @@ function ArrangeMeeting() {
             "student_participant_id": -1,
             "is_online": false
         });
-        fetch(`http://127.0.0.1:8080/account/integrations`, getReqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/account/integrations`, getReqOptions)
             .then(response => response.json())
             .then(json => {
                 setIntegr(json);
                 if (json.planner) {
-                    fetch('http://127.0.0.1:8080/students', getReqOptions)
+                    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/students`, getReqOptions)
                         .then(response => response.json())
                         .then(json => { setStudents(json["students"]); resetSelect(); })
                         .catch(error => console.error(error));
@@ -105,12 +105,12 @@ function ArrangeMeeting() {
             to.setTime(to.getTime() + 60 * 60000 - to.getTimezoneOffset() * 60 * 1000)
             let from = GetUtcDate(formData["meeting_time"]);
             from.setTime(from.getTime() - 60 * 60000 - from.getTimezoneOffset() * 60 * 1000)
-            const meetingsInTimeRes = await fetch(`http://127.0.0.1:8080/meetings?from=${from.toISOString()}&to=${to.toISOString()}`, getReqOptions)
+            const meetingsInTimeRes = await fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/meetings?from=${from.toISOString()}&to=${to.toISOString()}`, getReqOptions)
             const meetingsjs = await meetingsInTimeRes.json()
             setMeetings(meetingsjs["meetings"])
 
             if (meetingsjs["meetings"].length === 0) {
-                const response = await fetch('http://127.0.0.1:8080/meetings/add', postMeetingReqOptions)
+                const response = await fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/meetings/add`, postMeetingReqOptions)
                 const status = response.status;
                 console.log("Responce status:", status);
                 event.target.reset();

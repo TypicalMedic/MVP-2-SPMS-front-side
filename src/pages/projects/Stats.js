@@ -24,7 +24,7 @@ function ProjectStats() {
 
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8080/projects/${projectId}/statistics`, reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/${projectId}/statistics`, reqOptions)
             .then(response => response.json())
             .then(json => setStats(json))
             .catch(error => console.error(error));

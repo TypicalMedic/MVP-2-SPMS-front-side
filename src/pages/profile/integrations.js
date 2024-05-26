@@ -19,16 +19,16 @@ const reqOptions = {
     }
 };
 
-const googleCalendarAuth = "http://localhost:3000/integration/googlecalendar";
-const googleDriveAuth = "http://localhost:3000/integration/googledrive";
-const gitHubAuth = "http://localhost:3000/integration/github";
+const googleCalendarAuth = `${process.env.REACT_APP_ADDR}/integration/googlecalendar`;
+const googleDriveAuth = `${process.env.REACT_APP_ADDR}/integration/googledrive`;
+const gitHubAuth = `${process.env.REACT_APP_ADDR}/integration/github`;
 
 const Integrations = () => {
     const [integr, setIntegr] = useState(null);
 
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8080/account/integrations`, reqOptions)
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/account/integrations`, reqOptions)
             .then(response => response.json())
             .then(json => setIntegr(json))
             .catch(error => console.error(error));

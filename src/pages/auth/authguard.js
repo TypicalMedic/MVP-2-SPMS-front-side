@@ -16,7 +16,7 @@ const AuthGuard = (props) => {
     };
 
     let auth = (cookies.get('session_token') !== undefined) ? true : null;
-    fetch("http://127.0.0.1:8080/pingauth", reqOptions).then(response => {
+    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/pingauth`, reqOptions).then(response => {
         if (response.status === 401) {
             if (cookies.get('session_token') !== undefined) {
                 cookies.remove('session_token', { "path": "/" });
