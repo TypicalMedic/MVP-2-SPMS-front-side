@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Col, Row, Badge, Container, Button } from 'react-bootstrap';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import SpinnerCenter from 'pages/shared/Spinner';
+import StatusSelect from 'pages/shared/status/StatusSelect';
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -41,10 +42,10 @@ function Project() {
                         <div>
                             <Row className='mb-3'>
                                 <Col md="auto">
-                                    Статус: <Badge pill bg="info" className='mx-2 style-bg'>{project.status}</Badge>
+                                    Статус: <StatusSelect status={project.status}/>
                                 </Col>
                                 <Col md="auto">
-                                    Стадия: <Badge pill bg="info" className='mx-2 style-bg'>{project.stage}</Badge>
+                                    Стадия: <StatusSelect status={project.stage}/>
                                 </Col>
                             </Row>
                             <Row className='mb-3' xs={1} md={2} lg={2}>

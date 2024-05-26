@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 import { useParams } from "react-router-dom";
 import { FormatDateTime } from 'pages/shared/FormatDates';
+import StatusSelect from 'pages/shared/status/StatusSelect';
 
 const cookies = new Cookies();
 const reqOptions = {
@@ -46,7 +47,7 @@ function Tasks() {
         tasks.map((task) =>
           <Col>
             <Card className="mb-4 style-outline">
-              <Card.Header>#{task.id} <Badge pill bg="info" className='style-bg'>{task.status}</Badge></Card.Header>
+              <Card.Header>#{task.id} <StatusSelect selectClass="style-select-in-badge-sm" status={task.status}/></Card.Header>
               <Card.Body>
                 <Card.Title className='mb-3'>
                   <LinkContainer to={"./" + task.id}>
