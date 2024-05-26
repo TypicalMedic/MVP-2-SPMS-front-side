@@ -21,6 +21,7 @@ const reqOptions = {
 
 function Meetings() {
     const [meetings, setMeetings] = useState(null);
+    const [meetingsStatuses, setMeetingsStatuses] = useState(null);
     const [meetingFromTime, setMeetingFromTime] = useState(new Date())
     const [integr, setIntegr] = useState(null);
 
@@ -37,6 +38,10 @@ function Meetings() {
                     }), reqOptions)
                         .then(response => response.json())
                         .then(json => setMeetings(json["meetings"]))
+                        .catch(error => console.error(error));
+                    fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/meetings/statuslist`, reqOptions)
+                        .then(response => response.json())
+                        .then(json => setMeetingsStatuses(json["statuses"]))
                         .catch(error => console.error(error));
                     setMeetingFromTime(currentTime)
                     return
@@ -62,7 +67,7 @@ function Meetings() {
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>
-                        {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> <StatusSelect selectClass="style-select-in-badge-sm" status={meeting.status}/>
+                        {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> <StatusSelect items={meetingsStatuses} selectClass="style-select-in-badge-sm" status={meeting.status}/>
                     </h5>
                     <div className=''>
                         Студент: <LinkContainer to={"/projects/" + meeting.student.project_id} className='fst-italic' title={meeting.student.project_theme}>
@@ -97,7 +102,7 @@ function Meetings() {
                     <div >
                         {integr ?
                             integr.planner ?
-                                meetings ? ParseMeetings() : SpinnerCenter() :
+                                meetings && meetingsStatuses? ParseMeetings() : SpinnerCenter() :
                                 <>
                                     <h3>Вы еще не подключили планировщик, это можно сделать <a href='/profile/integrations'>здесь</a></h3>
                                 </> :

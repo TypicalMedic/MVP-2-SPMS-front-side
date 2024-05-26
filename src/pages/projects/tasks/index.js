@@ -23,6 +23,7 @@ const reqOptions = {
 
 function Tasks() {
   const [tasks, setTasks] = useState(null);
+  const [tasksStatuses, setTasksStatuses] = useState(null);
   let { projectId } = useParams();
 
   useEffect(() => {
@@ -32,6 +33,10 @@ function Tasks() {
       .then(response => response.json())
       .then(json => setTasks(json["tasks"]))
       .catch(error => console.error(error));
+      fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/tasks/statuslist`, reqOptions)
+          .then(response => response.json())
+          .then(json => setTasksStatuses(json["statuses"]))
+          .catch(error => console.error(error));
   }, []);
 
   function renderTasks() {
@@ -47,7 +52,7 @@ function Tasks() {
         tasks.map((task) =>
           <Col>
             <Card className="mb-4 style-outline">
-              <Card.Header>#{task.id} <StatusSelect selectClass="style-select-in-badge-sm" status={task.status}/></Card.Header>
+              <Card.Header>#{task.id} <StatusSelect items={tasksStatuses} selectClass="style-select-in-badge-sm" status={task.status}/></Card.Header>
               <Card.Body>
                 <Card.Title className='mb-3'>
                   <LinkContainer to={"./" + task.id}>

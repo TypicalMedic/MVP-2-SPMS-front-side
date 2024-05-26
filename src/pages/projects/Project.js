@@ -20,6 +20,8 @@ const reqOptions = {
 
 function Project() {
     const [project, setProject] = useState(null);
+    const [projectsStatuses, setProjectsStatuses] = useState(null);
+    const [projectsStages, setProjectsStages] = useState(null);
     let { projectId } = useParams();
 
 
@@ -27,6 +29,14 @@ function Project() {
         fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/` + projectId, reqOptions)
             .then(response => response.json())
             .then(json => setProject(json))
+            .catch(error => console.error(error));
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/statuslist`, reqOptions)
+            .then(response => response.json())
+            .then(json => setProjectsStatuses(json["statuses"]))
+            .catch(error => console.error(error));
+        fetch(`${process.env.REACT_APP_SERVER_ADDR}/api/v1/projects/stagelist`, reqOptions)
+            .then(response => response.json())
+            .then(json => setProjectsStages(json["stages"]))
             .catch(error => console.error(error));
     }, []);
     return (
@@ -42,10 +52,10 @@ function Project() {
                         <div>
                             <Row className='mb-3'>
                                 <Col md="auto">
-                                    Статус: <StatusSelect status={project.status}/>
+                                    Статус: <StatusSelect items={projectsStatuses} status={project.status}/>
                                 </Col>
                                 <Col md="auto">
-                                    Стадия: <StatusSelect status={project.stage}/>
+                                    Стадия: <StatusSelect items={projectsStages} status={project.stage}/>
                                 </Col>
                             </Row>
                             <Row className='mb-3' xs={1} md={2} lg={2}>
