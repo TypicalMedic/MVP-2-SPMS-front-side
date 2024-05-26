@@ -17,6 +17,7 @@ const reqOptions = {
         "Session-Id": cookies.get('session_token')
     }
 };
+
 let reqOptionsPut = {
     method: "PUT",
     mode: "cors",

@@ -4,6 +4,7 @@ function StatusSelect(props) {
     return <>
         <Badge pill bg="info" className='mx-2 style-bg'>
             <select onChange={(e) => {
+                props.id ? props.func(e, e.target.value, props.id):
                 props.func(e, e.target.value);
             }}
                 className={props.selectClass ? props.selectClass : 'style-select-in-badge'}>

@@ -67,7 +67,7 @@ function Meetings() {
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>
-                        {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> <StatusSelect items={meetingsStatuses} selectClass="style-select-in-badge-sm" status={meeting.status}/>
+                        {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> 
                     </h5>
                     <div className=''>
                         Студент: <LinkContainer to={"/projects/" + meeting.student.project_id} className='fst-italic' title={meeting.student.project_theme}>
