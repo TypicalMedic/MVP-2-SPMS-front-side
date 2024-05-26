@@ -100,7 +100,7 @@ function Register() {
 
                                         <Form.Group className="mb-3" controlId="login">
                                             <Form.Label>ВУЗ *</Form.Label>
-                                            <Form.Control name="university_id" onChange={handleChange} required value={1} disabled />
+                                            <Form.Control name="university_id" onChange={handleChange} required value={"НИУ ВШЭ"} disabled />
                                         </Form.Group>
 
                                         <Row className='justify-content-center'>
