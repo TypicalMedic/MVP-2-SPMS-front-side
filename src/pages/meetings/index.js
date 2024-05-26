@@ -5,6 +5,7 @@ import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { Link } from 'react-router-dom';
 import SpinnerCenter from 'pages/shared/Spinner';
 import { FormatDate, FormatDateTime } from 'pages/shared/FormatDates';
+import StatusSelect from 'pages/shared/status/StatusSelect';
 
 const cookies = new Cookies();
 
@@ -61,7 +62,7 @@ function Meetings() {
                 </Col>
                 <Col className='mb-3 text-break'>
                     <h5>
-                        {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> <Badge pill className='style-bg'>{meeting.status}</Badge>
+                        {meeting.name} <Badge pill className='style-bg'>{meeting.is_online ? "online" : "offline"}</Badge> <StatusSelect selectClass="style-select-in-badge-sm" status={meeting.status}/>
                     </h5>
                     <div className=''>
                         Студент: <LinkContainer to={"/projects/" + meeting.student.project_id} className='fst-italic' title={meeting.student.project_theme}>
