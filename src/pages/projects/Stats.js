@@ -86,10 +86,10 @@ function ProjectStats() {
         if (SupRewCrData.length != 0) {
             reqB["supervisor_review"] = {};
             if (SupRewData.created !== undefined) {
-                reqB.supervisor_review.created = SupRewData.created;
+                reqB.supervisor_review.created = SupRewData.created.split("T")[0] + "T00:00:00Z";
             }
             else{
-                let a = new Date(Date.now()).toISOString().split("T")[0];
+                let a = new Date(Date.now()).toISOString();
                 reqB.supervisor_review["created"] = a;
             }
 
@@ -307,11 +307,11 @@ function ProjectStats() {
                                         <div className='fs-4 mb-2 fw-medium'>Научного руководителя: <span className='fs-5 mb-2 fw-normal'>{stats.grades.supervisor_grade ? stats.grades.supervisor_grade : "отсутствует"}</span></div>
                                         {RenderSupervisorReview()}
                                         <div className='fs-4 mb-2 fw-medium'>Итоговая: <span className='fs-5 mb-2 fw-normal'>{stats.grades.final_grade ? stats.grades.final_grade : "отсутствует"}</span></div>
-                                        <Row sm={1} lg={1} xl={2}>
+                                        {/* <Row sm={1} lg={1} xl={2}>
                                             <LinkContainer as={Col} to={""}>
                                                 <Button className='style-button mb-3'>Составить отзыв руководителя</Button>
                                             </LinkContainer>
-                                        </Row>
+                                        </Row> */}
                                     </Row>
                                 </Col>
                             </Row>
