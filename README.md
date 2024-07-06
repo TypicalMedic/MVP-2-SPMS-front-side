@@ -1,3 +1,26 @@
+# Student project management system frontend
+
+Сайт на React для https://github.com/TypicalMedic/mvp-2-spms
+
+## Запуск 
+
+Зависимости:
+
+* Node JS
+
+Для работы сайта требуется создать .env файл в корне проекта:
+
+```
+REACT_APP_SERVER_ADDR=http://localhost:8080
+REACT_APP_ADDR=http://localhost:3000
+```
+
+Где указать адреса сервера и сайта
+
+Локально приложение запускается командой `npm start`
+
+
+////// вдруг полезно
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
