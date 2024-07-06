@@ -1,15 +1,17 @@
 import { Outlet, Link } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
+import Cookies from 'universal-cookie';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import Container from 'react-bootstrap/Container';
 
+const cookies = new Cookies();
 const Layout = () => {
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
+            <Navbar expand="lg" className="bg-body-tertiary" >
                 <Container>
                     <LinkContainer to="/">
                         <Navbar.Brand>SPMS</Navbar.Brand>
@@ -20,7 +22,10 @@ const Layout = () => {
                             <LinkContainer to="/">
                                 <Nav.Link>Главная</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/projects">
+                            <LinkContainer to={{
+                                pathname: "/projects",
+                                search: "?filter=InProgress",
+                                }} >
                                 <Nav.Link>Проекты</Nav.Link>
                             </LinkContainer>
                             <NavDropdown title="Встречи" id="basic-nav-dropdown">
@@ -37,9 +42,23 @@ const Layout = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <LinkContainer to="/scientificleadership/add">
-                                <Button variant="success">Взять под научное руководство</Button>
-                            </LinkContainer>
+                            <div className="d-flex align-items-center">
+                                <LinkContainer to="/scientificleadership/add">
+                                    <Button className="style-button mx-2" variant="success" size="sm">Взять под научное руководство</Button>
+                                </LinkContainer>
+                            </div>
+                            {cookies.get('session_token') == undefined ?
+                                <LinkContainer to="/login">
+                                    <Nav.Link>Войти</Nav.Link>
+                                </LinkContainer> :
+                                <>
+                                    <LinkContainer to={`/profile`}>
+                                        <Nav.Link>Профиль</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to={`/logout`}>
+                                        <Nav.Link>Выйти</Nav.Link>
+                                    </LinkContainer>
+                                </>}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
